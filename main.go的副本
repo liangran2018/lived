@@ -1,0 +1,110 @@
+package main
+
+import (
+	"fmt"
+	"strings"
+
+	"github.com/liangran2018/lived/base"
+	"github.com/liangran2018/lived/human"
+	"github.com/liangran2018/lived/materiel"
+	"github.com/liangran2018/lived/plat/home"
+	"github.com/liangran2018/lived/explore"
+	"github.com/liangran2018/lived/log"
+	"github.com/liangran2018/lived/rule"
+)
+
+const defaultName = "一一"
+
+func main() {
+first:
+	fmt.Println("1.新游戏\n2.继续游戏\n3.退出")
+	input, err := base.Input()
+	if err != nil {
+		panic(err)
+	}
+
+	var fileName string
+
+	switch input {
+	case "1":
+		fmt.Println("输入名字: ")
+		input, err = base.Input()
+		if err != nil || input == "" {
+			input = defaultName
+		}
+		rule.NewGame(input)
+	case "2":
+		keep := base.ChooseKeep()
+		if len(keep) == 0 {
+			fmt.Println("无存档\n")
+			goto first
+		}
+
+		fmt.Println("请选择存档：")
+		for k, v := range keep {
+			fmt.Println(base.StrVal(k+1) + "." + v)
+		}
+
+		input, err = base.Input()
+		if err != nil || input == "" {
+			fmt.Println("输入错误")
+			goto first
+		}
+
+		i, err := base.IntVal(input)
+		if err != nil || i <= 0 || i > len(keep) {
+			fmt.Println("输入错误")
+			goto first
+		}
+
+		j := strings.Index(keep[i-1], "-")
+		fileName = keep[i-1][:j] + ".json"
+		d, err := base.LoadFile(fileName)
+		if err != nil {
+			fmt.Println("读取错误")
+			goto first
+		}
+
+		rule.Load(d)
+		log.OpenLogFile(i)
+	default:
+		return
+	}
+
+	defer log.GetLogger().Close()
+
+	for {
+		rule.Show()
+		fmt.Println("1.查看人物详细状态\n2.查看仓库\n3.查看营地\n4.出门\n5.退出")
+input:
+		input, err = base.Input()
+		if err != nil {
+			log.GetLogger().Log(log.Warning, "mainwin input err", err.Error())
+			fmt.Println("输入失败")
+			continue
+		}
+
+		if input == "" {
+			goto input
+		}
+
+		switch input {
+		case "1":
+			fmt.Println(human.GetHuman().Detail())
+		case "2":
+			materiel.GetOwnThings().Show()
+			materiel.GetOwnThings().Use()
+		case "3":
+			home.ChooseBuilding()
+		case "4":
+			explore.Go()
+		case "5":
+			if err = rule.Save(fileName); err == nil {
+				fmt.Println("保存成功")
+				return
+			}
+		}
+
+	}
+}
+
