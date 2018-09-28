@@ -3,7 +3,7 @@ package env
 import (
 	"fmt"
 	"log"
-	"github.com/liangran2018/lived/human"
+	_ "github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/base"
 )
 
@@ -40,7 +40,7 @@ var MonthDay = map[int]int{
 }
 
 func NewTime() {
-	gmTimeInt = &gameTimeInt{201803010800, 1}
+	gmTimeInt = &gameTimeInt{1803010800, 1}
 	gmTime = &gameTime{y:2018, m:3, d:1, h:8, mi:0, over:1}
 }
 
@@ -64,7 +64,7 @@ func (this *gameTimeInt) Int2Time() *gameTime {
 	gt.h = (t%10000)/100
 	gt.d = (t/10000)%100
 	gt.m = (t/1000000)%100
-	gt.y = t/100000000
+	gt.y = t/100000000 + 2000
 	gt.over = this.over
 	return gt
 }
@@ -75,13 +75,13 @@ func Int2Time(t int) *gameTime {
 	gt.h = (t%10000)/100
 	gt.d = (t/10000)%100
 	gt.m = (t/1000000)%100
-	gt.y = t/100000000
+	gt.y = t/100000000 + 2000
 	return gt
 }
 
 func (this *gameTime) Time2Int() *gameTimeInt {
 	gt := &gameTimeInt{}
-	gt.t = this.mi + this.h * 100 + this.d * 10000 + this.m * 1000000 + this.y * 100000000
+	gt.t = this.mi + this.h * 100 + this.d * 10000 + this.m * 1000000 + (this.y - 2000) * 100000000
 	gt.over = this.over
 	return gt
 }
@@ -92,14 +92,14 @@ func (this *gameTime) Show() string {
 
 func (this *gameTime) Add(h, mi int) {
 	for i:=0; i<h; i++ {
-		human.GetHuman().ChangePerHour()
+		//human.GetHuman().ChangePerHour()
 	}
 
 	this.mi += mi
 	if this.mi >= 60 {
 		this.h++
 		this.mi -= 60
-		human.GetHuman().ChangePerHour()
+		//human.GetHuman().ChangePerHour()
 	}
 
 	this.h += h
@@ -109,7 +109,7 @@ func (this *gameTime) Add(h, mi int) {
 		this.over++
 		log.Printf("第%d天\n", this.over)
 		NewWeather()
-		human.GetHuman().ChangePerDay()
+	//	human.GetHuman().ChangePerDay()
 		MoodChangePerDay()
 	}
 

@@ -25,7 +25,7 @@ func init() {
 	data.PlatAnimal = make(map[int]map[int]int)
 }
 
-func NewGame(c *gin.Context) {
+func NewGame(name string) {
 	//开始时间
 	data.StartTime = time.Now().Format("2006-01-02 15:04:05")
 	//上次游戏时间
