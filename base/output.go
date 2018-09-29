@@ -2,6 +2,7 @@ package base
 
 import (
 	"net/http"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,6 +18,5 @@ func Output(c *gin.Context, result int, data interface{}) {
 
 	o := outputStr{Result:result, Data:data}
 	c.JSON(http.StatusOK, o)
-	//logger.Log("SSOGO:RUNTIME", logger.GetRequestCommand(c), o)
 	return
 }

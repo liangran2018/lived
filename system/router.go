@@ -3,6 +3,8 @@ package system
 import (
 	"github.com/liangran2018/lived/base"
 	"github.com/liangran2018/lived/frame"
+	"github.com/liangran2018/lived/human"
+	"github.com/liangran2018/lived/materiel"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,7 +15,12 @@ func AddRoute(app *gin.Engine) {
 	app.GET("/newgame", frame.NewGame)
 	app.GET("/getbackup", frame.GetBackup)
 	app.GET("/loadbackup", frame.ChooseBackup)
+	app.GET("/save", frame.Save)
 
+	app.GET("/herodetail", human.Show)
+	app.GET("/ownthingshow", materiel.Show)
+	app.POST("/ownthingadd", materiel.Add)
+	app.POST("/ownthingplus", materiel.Plus)
 	app.GET("/test", test)
 	// 无路由或无方法
 	app.NoRoute(error)

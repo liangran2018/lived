@@ -4,9 +4,6 @@ import (
 	"github.com/liangran2018/lived/log"
 )
 
-type Product int
-type ProType int
-
 type Fight struct {
 	Attack int
 	Defend int
@@ -37,60 +34,6 @@ type FoodEnergy struct {
 	PoisonLostMood int
 	PoisonLostWake int
 }
-
-const (
-	Meat Product = iota
-	BBQ
-	Potato
-	Fish
-	Water
-	Sewage
-	Sea
-	Alcohol
-	Coco
-	Grape
-	Jujube
-
-	Herb
-
-	Wood
-	Stone
-	Pebble	//石子
-	Liana	//藤蔓
-	Cloth	//布
-	Grass 	//草
-	Sand	//沙子
-	Leaf
-	Metal	//金属
-	Gold
-	Arrow
-
-	Bow
-	Knife
-
-	ClothArmor
-
-	SmallFire
-
-	Undefined
-)
-
-const (
-	Materiel ProType = iota
-	Food
-	Drug
-	Equip
-
-	unknown
-)
-
-const (
-	Weapon = iota
-	Armor
-	Fire
-
-	other
-)
 
 var productName []string
 var productWeight []int

@@ -2,7 +2,6 @@ package materiel
 
 import (
 	"fmt"
-	"strconv"
 
 	"github.com/liangran2018/lived/log"
 	"github.com/liangran2018/lived/base"
@@ -10,16 +9,6 @@ import (
 
 type OwnThings struct {
 	product  map[Product]int
-}
-
-var oth *OwnThings
-
-func init() {
-	animalInit()
-	productInit()
-
-	oth = &OwnThings{}
-	oth.product = make(map[Product]int, Undefined)
 }
 
 func NewOwnThings() {
@@ -81,44 +70,13 @@ func (this *OwnThings) PlusProduct(k Product, v int) {
 }
 
 func (this *OwnThings) Nothing() bool {
-	if len(this.product) == 0 {
-		return true
-	}
-	return false
-}
-
-func (this *OwnThings) Show() {
-	if this.Nothing() {
-		fmt.Println("你一无所有")
-		return
-	}
-
-	var (
-		m = "材料："
-		f = "食物："
-		d = "药品："
-		e = "装备："
-		s string
-	)
-
-	for k, v := range this.product {
-		s = k.Name() + "x" + strconv.Itoa(v) + " "
-		switch k.Type() {
-		case Materiel:
-			m += s
-		case Food:
-			f += s
-		case Drug:
-			f += s
-		case Equip:
-			e += s
-		default:
-			log.GetLogger().Log(log.Wrong, "OwnShow", k.Type())
+	for _, v := range this.product {
+		if v != 0 {
+			return false
 		}
 	}
 
-	fmt.Println(m + "\n" + f + "\n" + d + "\n" + e + "\n")
-	return
+	return true
 }
 
 func (this *OwnThings) Use() {

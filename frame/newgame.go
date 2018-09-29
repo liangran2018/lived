@@ -7,6 +7,7 @@ import (
 	"github.com/liangran2018/lived/env"
 	"github.com/liangran2018/lived/log"
 	"github.com/liangran2018/lived/human"
+	"github.com/liangran2018/lived/materiel"
 
 	"github.com/gin-gonic/gin"
 )
@@ -34,7 +35,7 @@ func NewGame(c *gin.Context) {
 	//营地起始建筑，只有床
 	//home.NewOwnBuilding()
 	//起始拥有物品
-	//materiel.NewOwnThings()
+	materiel.NewOwnThings()
 	//地图初始化
 	//plat.NewPublic()
 	//记录

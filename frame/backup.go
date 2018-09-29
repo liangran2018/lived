@@ -24,6 +24,7 @@ type backupInfo struct {
 }
 
 var backup []*backupInfo
+var fileName string
 
 func backupInit() {
 	backup = make([]*backupInfo, 0)
@@ -63,7 +64,7 @@ func ChooseBackup(c *gin.Context) {
 		return
 	}
 
-	fileName := backup[i].FileName + ".json"
+	fileName = backup[i].FileName + ".json"
 	d, err := loadFile(fileName)
 	if err != nil {
 		base.Output(c, base.OpenFileErr, err.Error())

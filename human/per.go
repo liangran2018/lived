@@ -7,6 +7,7 @@ import (
 
 type Human struct {
 	Name   string
+	Hero   hero
 	Hurt   int
 	Ill    int
 	Hungry int
@@ -32,7 +33,7 @@ func NewHuman(name string) {
 }
 
 func LoadHuman(u base.User, name string) {
-	summer = &Human{Name: name, Hurt:u.Hurt, Ill: u.Ill, Hungry: u.Hungry, Thirst: u.Thirst,
+	summer = &Human{Name: name, Hero: hero(u.Hero), Hurt:u.Hurt, Ill: u.Ill, Hungry: u.Hungry, Thirst: u.Thirst,
 		Blood: u.Blood, Mood: u.Mood, Wake: u.Wake, Lvl: u.Lvl, Exp: u.Exp}
 	h := allHero[hero(u.Hero)]
 	summer.Attack = h.Attack

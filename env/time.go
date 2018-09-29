@@ -125,3 +125,7 @@ func (this *GameTime) Add(h, mi int) {
 func (this *gameTimeInt) Time() int {
 	return this.t
 }
+
+func (this *gameTimeInt) Overday() int {
+	return this.over
+}
