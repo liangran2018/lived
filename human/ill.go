@@ -1,30 +1,26 @@
 package human
 
-func (this *human) Ill() int {
-	return this.ill
+func (this *Human) IsIll() bool {
+	return this.Ill <= 75
 }
 
-func (this *human) IsIll() bool {
-	return this.ill <= 75
+func (this *Human) IllStatus() {
+	this.Blood -= 3
+	this.Mood -= 4
 }
 
-func (this *human) IllStatus() {
-	this.blood -= 3
-	this.mood -= 4
-}
-
-func (this *human) IllChangePerHour() {
+func (this *Human) IllChangePerHour() {
 	if this.IsIll() {
 		this.IllStatus()
 	} else {
-		this.ill++
-		if this.ill > 100 {
-			this.ill = 100
+		this.Ill++
+		if this.Ill > 100 {
+			this.Ill = 100
 		}
 	}
 }
 
-func (this *human) illShow() string {
+func (this *Human) illShow() string {
 	if this.IsIll() {
 		return "内伤"
 	}

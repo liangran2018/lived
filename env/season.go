@@ -1,14 +1,24 @@
 package env
 
+import (
+	"github.com/liangran2018/lived/log"
+)
+
+type season int
+
 const (
-	spring = iota
+	spring season = iota
 	summer
 	autumn
 	winter
 )
 
-func GetSeason() int {
-	switch GetTime().Month() {
+func (this season) Name() string {
+	return seasonName[int(this)]
+}
+
+func GetSeason() season {
+	switch GetTime().Month {
 	case 2, 3, 4, 5:
 		return spring
 	case 6, 7, 8:
@@ -19,20 +29,6 @@ func GetSeason() int {
 		return winter
 	}
 
-	panic(GetTime().Month())
-}
-
-func ShowSeason() string {
-	switch GetSeason() {
-	case spring:
-		return "春"
-	case summer:
-		return "夏"
-	case autumn:
-		return "秋"
-	default:
-		return "冬"
-	}
-
-	panic(GetSeason())
+	log.GetLogger().Log(log.Wrong, "GetSeason err", GetTime().Month)
+	return spring
 }

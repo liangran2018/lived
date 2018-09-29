@@ -13,12 +13,8 @@ const (
 	crazy
 )
 
-func (this *human) Mood() int {
-	return this.mood
-}
-
-func (this *human) MoodStatus() moodStatus {
-	m := this.Mood()
+func (this *Human) MoodStatus() moodStatus {
+	m := this.Mood
 	if m >= 95 { return crazy }
 	if m < 95 && m >= 80 { return happy }
 	if m < 80 && m >= 55 { return normal }
@@ -30,18 +26,18 @@ func (this *human) MoodStatus() moodStatus {
 	return normal
 }
 
-func (this *human) MoodChange(i int) {
-	this.mood += i
-	if this.mood > 100 {
-		this.mood = 100
+func (this *Human) MoodChange(i int) {
+	this.Mood += i
+	if this.Mood > 100 {
+		this.Mood = 100
 	}
 
-	if this.mood < 0 {
-		this.mood = 0
+	if this.Mood < 0 {
+		this.Mood = 0
 	}
 }
 
-func (this *human) moodShow() string {
+func (this *Human) moodShow() string {
 	switch this.MoodStatus() {
 	case crazy:
 		return "欣喜"

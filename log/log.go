@@ -87,8 +87,12 @@ func (this LogLvl) notice() string {
 func (this *logging) Log(lvl LogLvl, opera ...interface{}) {
 	this.l.WriteString(lvl.notice())
 	this.l.WriteString(time.Now().Format("2006-01-02 15:04:05") + " ")
+	if len(opera) == 0 {
+		return
+	}
+
 	for _, o := range opera {
-		this.l.WriteString(base.StrVal(o) + ",")
+		this.l.WriteString(base.StrVal(o) + " ")
 	}
 	this.l.WriteString("\n")
 }

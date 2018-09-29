@@ -1,28 +1,24 @@
 package human
 
-func (this *human) Thirst() int {
-	return this.thirst
+func (this *Human) IsThirst() bool {
+	return this.Thirst <= 40
 }
 
-func (this *human) IsThirst() bool {
-	return this.thirst <= 40
+func (this *Human) ThirstStatus() {
+	this.Ill--
+	this.Mood -= 3
 }
 
-func (this *human) ThirstStatus() {
-	this.ill--
-	this.mood -= 3
-}
-
-func (this *human) ThristChangePerHour() {
-	this.thirst -= 6
+func (this *Human) ThristChangePerHour() {
+	this.Thirst -= 6
 	if this.IsThirst() {
 		this.ThirstStatus()
 	}
 }
 
-func (this *human) thristShow() string {
+func (this *Human) thristShow() string {
 	if this.IsThirst() {
-		return "干渴"
+		return "口渴"
 	}
 
 	return "正常"

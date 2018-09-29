@@ -5,12 +5,13 @@ import (
 	"fmt"
 
 	"github.com/liangran2018/lived/base"
+	"github.com/liangran2018/lived/log"
 
 	"github.com/gin-gonic/gin"
 )
 
 func MainWin(c *gin.Context) {
-	f, err := os.Open(".pages/index.html")
+	f, err := os.Open("./pages/index.html")
 	if err != nil {
 		base.Output(c, base.OpenFileErr, err.Error())
 	}
@@ -25,4 +26,9 @@ func MainWin(c *gin.Context) {
 	if err != nil {
 		base.Output(c, base.PrintHtmlErr, err.Error())
 	}
+
+	//新建日志文件
+	log.NewLogFile()
+	//记录
+	log.GetLogger().Log(log.Info, "open program")
 }

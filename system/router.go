@@ -11,7 +11,8 @@ func AddRoute(app *gin.Engine) {
 	// 系统相关
 	app.GET("", frame.MainWin)
 	app.GET("/newgame", frame.NewGame)
-
+	app.GET("/getbackup", frame.GetBackup)
+	app.GET("/loadbackup", frame.ChooseBackup)
 
 	app.GET("/test", test)
 	// 无路由或无方法
