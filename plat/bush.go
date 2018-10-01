@@ -19,6 +19,6 @@ func bushInit() {
 func bushNew() {
 	public[lsd].product[materiel.Wood].num = 11
 	public[lsd].product[materiel.Pebble].num = 8
-	public[lsd].animal[materiel.Jujube].num = 1
+	public[lsd].product[materiel.Jujube].num = 1
 	public[lsd].animal[materiel.Snake].num = 12
 }

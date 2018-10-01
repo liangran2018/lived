@@ -33,6 +33,7 @@ const (
 	Arrow
 
 	Bow
+
 	Knife
 
 	ClothArmor
@@ -52,11 +53,25 @@ const (
 )
 
 const (
-	Weapon = iota
+	_ = iota
+	Remote
+	Melee
 	Armor
 	Fire
 
-	other
+	Unknown
+)
+
+const (
+	Wolf Animal = iota
+	WeakWolf
+	FierceWolf
+	Bear
+	WeakBear
+	FierceBear
+	Snake
+
+	end
 )
 
 func init() {

@@ -72,11 +72,15 @@ func (this Product) Type() ProType {
 
 func (this Product) EquipType() int {
 	if this.Type() != Equip {
-		return other
+		return Unknown
 	}
 
-	if this >= Bow && this < ClothArmor {
-		return Weapon
+	if this >= Bow && this < Knife {
+		return Remote
+	}
+
+	if this >= Knife && this < ClothArmor {
+		return Melee
 	}
 
 	if this >= ClothArmor && this < ClothArmor {
@@ -88,7 +92,7 @@ func (this Product) EquipType() int {
 	}
 
 	log.GetLogger().Log(log.Wrong, "EquipType", this.Type(), this.Name(), this)
-	return other
+	return Unknown
 }
 
 func (this Product) DrugEff() DrugEffect {

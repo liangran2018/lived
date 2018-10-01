@@ -12,7 +12,6 @@ import (
 	"github.com/liangran2018/lived/materiel"
 	"github.com/liangran2018/lived/env"
 	"github.com/liangran2018/lived/log"
-	"github.com/liangran2018/lived/rule"
 )
 
 type equipChoose struct {
@@ -47,11 +46,11 @@ func Go() {
 
 	explorePlace := place[plat.Place(i)]
 
-	if explorePlace.Lvl() > human.GetHuman().Lvl() {
+	if explorePlace.Lvl() > human.GetHuman().Lvl {
 		fmt.Println("你当前等级较低噢")
 	}
 
-	EquipMent()
+	//EquipMent()
 
 	if GetEquip().e[0] == materiel.Bow {
 		fmt.Println("需要携带箭")
@@ -79,7 +78,6 @@ func Go() {
 
 func ChooseNext(place *plat.Nature) {
 	for {
-		rule.Show()
 		fmt.Println("1.查看人物详细状态\n2.查看装备\n3.查看背包\n4.采集\n5.捕猎\n6.回家")
 input:
 		input, err := base.Input()
@@ -93,9 +91,9 @@ input:
 
 		switch input {
 		case "1":
-			fmt.Println(human.GetHuman().Detail())
+			//fmt.Println(human.GetHuman().Detail())
 		case "2":
-			GetEquip().Show()
+			//GetEquip().Show()
 		case "3":
 			GetBag().Show()
 		case "4":
@@ -229,7 +227,7 @@ func hunt(place *plat.Nature) materiel.Animal {
 
 func fight(i materiel.Animal) bool {
 	hero := GetHeroHot()
-	heroBlood := human.GetHuman().Blood()
+	heroBlood := human.GetHuman().Blood
 	animal := i.Hot()
 	animalBlood := animal.Blood
 

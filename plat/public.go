@@ -3,7 +3,6 @@ package plat
 import (
 	"fmt"
 
-	"github.com/liangran2018/lived/env"
 	"github.com/liangran2018/lived/materiel"
 )
 

@@ -3,9 +3,14 @@ package explore
 import (
 	"fmt"
 	"strconv"
+	"io/ioutil"
+	"encoding/json"
 
 	"github.com/liangran2018/lived/base"
 	"github.com/liangran2018/lived/materiel"
+	"github.com/liangran2018/lived/log"
+
+	"github.com/gin-gonic/gin"
 )
 
 var exploreBag *bag
@@ -18,7 +23,7 @@ type bag struct {
 
 func NewBag() {
 	exploreBag = &bag{}
-	exploreBag.max = 40
+	exploreBag.max = 50
 	exploreBag.product = make(map[materiel.Product]int)
 }
 
@@ -79,6 +84,28 @@ func (this *bag) Show() {
 	for k, v := range this.product {
 		fmt.Println(k.Name() + "x" + strconv.Itoa(v) + " ")
 	}
+}
+
+func Bag(c *gin.Context) {
+	c.Request.ParseForm()
+
+	b, err := ioutil.ReadAll(c.Request.Body)
+	if err != nil {
+		base.Output(c, base.ParaInvalid, err.Error())
+		log.GetLogger().Log(log.Wrong, "bag err", err.Error())
+		return
+	}
+	defer c.Request.Body.Close()
+
+	var data map[int]int
+	err = json.Unmarshal(b, &data)
+	if err != nil {
+		base.Output(c, base.ParaInvalid, err.Error())
+		log.GetLogger().Log(log.Wrong, "bag err", err.Error())
+		return
+	}
+
+
 }
 
 func Goods() {

@@ -11,6 +11,7 @@ import (
 )
 
 func MainWin(c *gin.Context) {
+	/*
 	f, err := os.Open("./pages/index.html")
 	if err != nil {
 		base.Output(c, base.OpenFileErr, err.Error())
@@ -26,7 +27,7 @@ func MainWin(c *gin.Context) {
 	if err != nil {
 		base.Output(c, base.PrintHtmlErr, err.Error())
 	}
-
+*/
 	//新建日志文件
 	log.NewLogFile()
 	//记录

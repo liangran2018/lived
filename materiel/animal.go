@@ -22,18 +22,6 @@ type AnimalNature struct {
 var animalName []string
 var animal map[Animal]AnimalNature
 
-const (
-	Wolf Animal = iota
-	WeakWolf
-	FierceWolf
-	Bear
-	WeakBear
-	FierceBear
-	Snake
-
-	end
-)
-
 func (this Animal) Name() string {
 	return animalName[int(this)]
 }
