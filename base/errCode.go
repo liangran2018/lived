@@ -16,4 +16,11 @@ const (
 	MaterialNotEnough = 20003
 
 	ParaInvalid = 40000
+
+	HeroDead = 80000
+	ProgramPanic = 90000
 )
+
+type DEAD struct {
+	Reason string `json:"reason"`
+}

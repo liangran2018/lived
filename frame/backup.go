@@ -11,6 +11,7 @@ import (
 	"github.com/liangran2018/lived/env"
 	"github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/log"
+	"github.com/liangran2018/lived/plat/home"
 
 	"github.com/gin-gonic/gin"
 )
@@ -71,6 +72,10 @@ func ChooseBackup(c *gin.Context) {
 		return
 	}
 
+	//新建日志文件
+	log.NewLogFile()
+	//记录
+	log.GetLogger().Log(log.Info, "open program")
 	load(d)
 	base.Output(c, 0, fillPara())
 	backupClear()
@@ -136,7 +141,7 @@ func load(d *base.Data) {
 	//加载人物
 	human.LoadHuman(d.User, d.Name)
 	//加载拥有建筑
-	//home.LoadOwnBuilding(d.OwnBuild)
+	home.LoadOwnBuilding(d.OwnBuild)
 	//加载拥有物品
 	//materiel.LoadOwnThings(d.OwnProduct)
 	//更新各地点上次到访时间

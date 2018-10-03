@@ -3,7 +3,6 @@ package system
 import (
 	"github.com/liangran2018/lived/base"
 	"github.com/liangran2018/lived/frame"
-	"github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/materiel"
 	"github.com/liangran2018/lived/explore"
 	"github.com/liangran2018/lived/plat/home"
@@ -13,13 +12,12 @@ import (
 
 func AddRoute(app *gin.Engine) {
 	// 系统相关
-	app.GET("", frame.MainWin)
+	//app.GET("", frame.MainWin)
 	app.GET("/api/newgame", frame.NewGame)
 	app.GET("/api/getbackup", frame.GetBackup)
 	app.GET("/api/loadbackup", frame.ChooseBackup)
 	app.GET("/api/save", frame.Save)
 
-	app.GET("/api/herodetail", human.Show)
 	app.GET("/api/ownthingshow", materiel.Show)
 	app.POST("/api/ownthingadd", materiel.Add)
 	app.POST("/api/ownthingplus", materiel.Plus)
@@ -30,10 +28,10 @@ func AddRoute(app *gin.Engine) {
 
 	app.POST("/bag", explore.Bag) //bug
 
-
 	app.GET("/api/buildshow", home.Show)
-	app.GET("/api/buildnotice", home.Notice)
+	app.GET("/api/buildupdatenotice", home.Notice)
 	app.GET("/api/buildupdate", home.Update)
+	app.GET("/api/choose", home.BedChoose)
 	app.GET("/test", test)
 	// 无路由或无方法
 	app.NoRoute(error)

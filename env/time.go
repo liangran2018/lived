@@ -2,7 +2,7 @@ package env
 
 import (
 	"github.com/liangran2018/lived/base"
-	_ "github.com/liangran2018/lived/human"
+	"github.com/liangran2018/lived/human"
 	"log"
 )
 
@@ -87,7 +87,7 @@ func (this *GameTime) Time2Int() *gameTimeInt {
 
 func (this *GameTime) Add(h, mi int) {
 	for i := 0; i < h; i++ {
-		//human.GetHuman().ChangePerHour()
+		human.GetHuman().ChangePerHour()
 	}
 
 	this.Minute += mi
@@ -105,7 +105,7 @@ func (this *GameTime) Add(h, mi int) {
 		log.Printf("第%d天\n", this.Overday)
 		NewWeather()
 		//	human.GetHuman().ChangePerDay()
-		MoodChangePerDay()
+		//MoodChangePerDay()
 	}
 
 	d, _ := MonthDay[this.Month]

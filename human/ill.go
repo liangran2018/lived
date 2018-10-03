@@ -1,5 +1,9 @@
 package human
 
+import (
+	"github.com/liangran2018/lived/base"
+)
+
 func (this *Human) IsIll() bool {
 	return this.Ill <= 75
 }
@@ -7,6 +11,14 @@ func (this *Human) IsIll() bool {
 func (this *Human) IllStatus() {
 	this.Blood -= 3
 	this.Mood -= 4
+
+	if this.Blood < 0 {
+		panic(base.DEAD{Reason:"内伤不致"})
+	}
+
+	if this.Mood < 0 {
+		this.Mood = 0
+	}
 }
 
 func (this *Human) IllChangePerHour() {
@@ -18,12 +30,4 @@ func (this *Human) IllChangePerHour() {
 			this.Ill = 100
 		}
 	}
-}
-
-func (this *Human) illShow() string {
-	if this.IsIll() {
-		return "内伤"
-	}
-
-	return "健康"
 }

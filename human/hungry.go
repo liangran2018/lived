@@ -34,21 +34,29 @@ func (this *Human) FullStatus() {
 	}
 }
 
+func (this *Human) HungryStatus() {
+	this.Ill -= 3
+	if this.Ill < 0 {
+		this.Ill = 0
+	}
+
+	this.Mood -= 2
+	if this.Mood < 0 {
+		this.Blood = 0
+	}
+}
+
 func (this *Human) HungryChangePerHour() {
 	this.Hungry -= 5
 	if this.IsFull() {
 		this.FullStatus()
 	}
-}
 
-func (this *Human) hungryShow() string {
 	if this.IsHungry() {
-		return "饥饿"
+		this.HungryStatus()
 	}
 
-	if this.IsFull() {
-		return "饱足"
+	if this.Hungry < 0 {
+		this.Hungry = 0
 	}
-
-	return "正常"
 }

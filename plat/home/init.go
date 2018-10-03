@@ -30,8 +30,7 @@ var obl *OwnBuilding
 //不可变， 设施属性， 第一个参数是种类（room/cook等）， 第二个是等级，从1开始
 var homeBuilding []building
 
-//玩家拥有的建筑，key是种类， value等级
-//var OwnBuilding []int
+var doing []func() *outputBuild
 
 var convert []string
 
@@ -48,17 +47,24 @@ const (
 )
 
 func init() {
-	NewHomeBuilding()
+	HomeBuildingInit()
 	convert = []string{"", "床", "火堆", "净水器", "药盒", "工具台", "田地", "栅栏", "钓鱼台"}
 	obl = &OwnBuilding{}
 	obl.Own = make([]ownBuild, 9)
+
+	doing = make([]func() *outputBuild, 9)
+	doing[bed] = sleep
+
+	actionNature = make(map[action]actionLimit, actionEnd)
+	actionNature[sleep1H] = actionLimit{lvl:1, t:bed}
+	actionNature[sleep4H] = actionLimit{lvl:1, t:bed}
+	actionNature[sleep8H] = actionLimit{lvl:1, t:bed}
+
+	actionNature[filterWater] = actionLimit{lvl:1, t:water}
+	actionNature[makeWine] = actionLimit{lvl:1, t:water}
 }
 
-func NewOwnBuilding() {
-	obl.Own[bed] = ownBuild{Lvl:1, Dur:100}
-}
-
-func NewHomeBuilding() {
+func HomeBuildingInit() {
 	homeBuilding = make([]building, 9)
 	bedInit()
 	fireInit()

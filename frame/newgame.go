@@ -21,6 +21,8 @@ func NewGame(c *gin.Context) {
 		name = defaultName
 	}
 
+	//新建日志文件
+	log.NewLogFile()
 	//开始时间
 	data.StartTime = time.Now().Format("2006-01-02 15:04:05")
 	//上次游戏时间

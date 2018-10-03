@@ -67,4 +67,5 @@ func (this *Human) ChangePerHour() {
 	this.ThristChangePerHour()
 	this.HurtChangePerHour()
 	this.IllChangePerHour()
+	this.WakeChangePerHour()
 }

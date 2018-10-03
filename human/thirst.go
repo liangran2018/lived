@@ -7,6 +7,13 @@ func (this *Human) IsThirst() bool {
 func (this *Human) ThirstStatus() {
 	this.Ill--
 	this.Mood -= 3
+	if this.Ill < 100 {
+		this.Ill = 100
+	}
+
+	if this.Mood < 100 {
+		this.Mood = 100
+	}
 }
 
 func (this *Human) ThristChangePerHour() {
@@ -14,12 +21,8 @@ func (this *Human) ThristChangePerHour() {
 	if this.IsThirst() {
 		this.ThirstStatus()
 	}
-}
 
-func (this *Human) thristShow() string {
-	if this.IsThirst() {
-		return "口渴"
+	if this.Thirst < 100 {
+		this.Thirst = 100
 	}
-
-	return "正常"
 }

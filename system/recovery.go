@@ -16,10 +16,14 @@ func AddRecovery() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-					base.Output(c, 90000, "系统错误:"+ base.StrVal(err))
+				switch e := err.(type) {
+				case base.DEAD:
+					base.Output(c, base.HeroDead, e.Reason)
+				default:
+					base.Output(c, base.ProgramPanic, "系统错误:"+ base.StrVal(err))
 					c.Writer.Write(panicFileAndLine(3))
 					c.AbortWithStatus(200)
-
+				}
 			}
 		}()
 		c.Next()

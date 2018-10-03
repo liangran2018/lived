@@ -1,5 +1,9 @@
 package human
 
+import (
+	"github.com/liangran2018/lived/base"
+)
+
 func (this *Human) IsHurt() bool {
 	return this.Hurt <= 60
 }
@@ -7,6 +11,14 @@ func (this *Human) IsHurt() bool {
 func (this *Human) HurtStatus() {
 	this.Blood -= 4
 	this.Mood -= 3
+
+	if this.Blood < 0 {
+		panic(base.DEAD{Reason:"外伤不致"})
+	}
+
+	if this.Mood < 0 {
+		this.Mood = 0
+	}
 }
 
 func (this *Human) HurtChangePerHour() {
@@ -18,16 +30,4 @@ func (this *Human) HurtChangePerHour() {
 			this.Hurt = 100
 		}
 	}
-}
-
-func (this *Human) hurtShow() string {
-	if this.IsHurt() {
-		return "重伤"
-	}
-
-	if this.Hurt < 80 {
-		return "轻伤"
-	}
-
-	return "健康"
 }
