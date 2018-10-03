@@ -24,7 +24,6 @@ const (
 	Stone
 	Pebble	//石子
 	Liana	//藤蔓
-	Cloth	//布
 	Grass 	//草
 	Sand	//沙子
 	Leaf

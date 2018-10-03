@@ -8,6 +8,7 @@ import (
 	"github.com/liangran2018/lived/log"
 	"github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/materiel"
+	"github.com/liangran2018/lived/plat/home"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,10 +31,12 @@ func NewGame(c *gin.Context) {
 	env.NewTime()
 	//获取天气
 	env.NewWeather()
+	//获取气温
+	env.NewTempToday()
 	//新建人物
 	human.NewHuman(name)
 	//营地起始建筑，只有床
-	//home.NewOwnBuilding()
+	home.NewOwnBuilding()
 	//起始拥有物品
 	materiel.NewOwnThings()
 	//地图初始化

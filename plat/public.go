@@ -7,8 +7,8 @@ import (
 )
 
 type Tc struct {
-	H int
-	Mi int
+	H int	`json:"h"`
+	Mi int	`json:"mi"`
 }
 
 type animalNature struct {

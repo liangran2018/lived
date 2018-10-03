@@ -6,10 +6,11 @@ import (
 )
 
 type mainPagePara struct {
-	User    *human.Human  `json:"user"`
-	Time    *env.GameTime `json:"time"`
-	Season  string        `json:"season"`
-	Weather string        `json:"weather"`
+	User       *human.Human  `json:"user"`
+	Time       *env.GameTime `json:"time"`
+	Season     string        `json:"season"`
+	Weather    string        `json:"weather"`
+	Temprature int           `json:"temprature"`
 }
 
 func fillPara() *mainPagePara {
@@ -18,6 +19,7 @@ func fillPara() *mainPagePara {
 	p.Time = env.GetTime()
 	p.Season = env.GetSeason().Name()
 	p.Weather = env.GetWeather().Name()
+	p.Temprature = env.GetTemp()
 
 	return p
 }

@@ -129,6 +129,10 @@ func loadFile(file string) (*base.Data, error) {
 func load(d *base.Data) {
 	//加载游戏时间
 	env.LoadTime(d.GameTime)
+	//加载天气
+	env.LoadWeather(d.Weather)
+	//加载温度
+	env.LoadTemp(d.Temprature)
 	//加载人物
 	human.LoadHuman(d.User, d.Name)
 	//加载拥有建筑

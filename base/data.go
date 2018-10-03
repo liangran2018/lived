@@ -5,12 +5,19 @@ type Data struct {
 	LastTime     string              `json:"lastTime"`
 	Name         string              `json:"name"`
 	GameTime     Time                `json:"gameTime"`
+	Weather      int				 `json:"weather"`
+	Temprature   int 				 `json:"temprature"`
 	User         User                `json:"user"`
-	OwnBuild     []int               `json:"ownBuild"`
+	OwnBuild     []OB                `json:"ownBuild"`
 	OwnProduct   map[int]int         `json:"ownMateriel"`
 	PlatLastTime map[int]int         `json:"platLastTime"`
 	PlatProduct  map[int]map[int]int `json:"platProduct"`
 	PlatAnimal   map[int]map[int]int `json:"platAnimal"`
+}
+
+type OB struct {
+	Lvl int `json:"lvl"`
+	Dur int `json:"dur"`
 }
 
 type Time struct {

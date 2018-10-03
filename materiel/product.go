@@ -122,11 +122,11 @@ func (this Product) EquipHot() Fight {
 func productInit() {
 	productName = make([]string, Undefined)
 	productName = []string{"肉", "烤肉", "土豆", "鱼", "净水", "污水", "海水", "酒精", "椰子", "葡萄", "野枣",
-		"药草", "木头", "石块", "石子", "藤蔓", "布", "草", "沙子", "阔叶", "金属", "黄金", "箭", "弓", "匕首", "布衣",
+		"药草", "木头", "石块", "石子", "藤蔓", "草", "沙子", "阔叶", "金属", "黄金", "箭", "弓", "匕首", "布衣",
 		"小火把"}
 
 	productWeight = make([]int, Undefined)
-	productWeight = []int{2, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 1, 3, 4, 2, 0, 0, 0, 0}
+	productWeight = []int{2, 2, 1, 2, 1, 1, 1, 1, 2, 1, 1, 1, 3, 3, 1, 1, 1, 1, 1, 3, 4, 2, 0, 0, 0, 0}
 
 	equipHot = make(map[Product]Fight, Undefined - Bow)
 	equipHot[Bow] = Fight{Attack:8, Critical:1}

@@ -6,6 +6,7 @@ import (
 	"github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/materiel"
 	"github.com/liangran2018/lived/explore"
+	"github.com/liangran2018/lived/plat/home"
 
 	"github.com/gin-gonic/gin"
 )
@@ -28,6 +29,11 @@ func AddRoute(app *gin.Engine) {
 	app.GET("/api/equipshow", explore.Show)
 
 	app.POST("/bag", explore.Bag) //bug
+
+
+	app.GET("/api/buildshow", home.Show)
+	app.GET("/api/buildnotice", home.Notice)
+	app.GET("/api/buildupdate", home.Update)
 	app.GET("/test", test)
 	// 无路由或无方法
 	app.NoRoute(error)

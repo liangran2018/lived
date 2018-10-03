@@ -41,6 +41,10 @@ func NewWeather() {
 	}
 }
 
+func LoadWeather(w int) {
+	todayWeather = weather(w)
+}
+
 func GetWeather() weather {
 	return todayWeather
 }

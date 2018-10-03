@@ -7,6 +7,7 @@ import (
 	"github.com/liangran2018/lived/base"
 	"github.com/liangran2018/lived/env"
 	"github.com/liangran2018/lived/log"
+	"github.com/liangran2018/lived/plat/home"
 
 	"github.com/gin-gonic/gin"
 )
@@ -16,7 +17,15 @@ func Save(c *gin.Context) {
 	data.User = base.User{Hurt:h.Hurt, Ill:h.Ill, Hungry:h.Hungry, Thirst:h.Thirst, Blood:h.Blood,
 		Mood:h.Mood, Wake:h.Wake, Lvl:h.Lvl, Exp:h.Exp, Hero:int(h.Hero)}
 	data.GameTime = base.Time{Time:env.GetTimeInt().Time(), Overday:env.GetTimeInt().Overday()}
-	//data.OwnBuild = home.GetOwnBuilding().Get()
+	data.Weather = int(env.GetWeather())
+	data.Temprature = env.GetBaseTemp()
+
+	for k, v := range home.GetOwnBuilding().Own {
+		if v.Lvl == 0 {
+			continue
+		}
+		data.OwnBuild[k] = base.OB{Lvl:v.Lvl, Dur:v.Dur}
+	}
 
 	//for k, v := range materiel.GetOwnThings().OwnProduct() {
 	//	data.OwnProduct[int(k)] = v

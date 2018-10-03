@@ -1,10 +1,6 @@
 package frame
 
 import (
-	"os"
-	"fmt"
-
-	"github.com/liangran2018/lived/base"
 	"github.com/liangran2018/lived/log"
 
 	"github.com/gin-gonic/gin"

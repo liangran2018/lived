@@ -12,6 +12,8 @@ const (
 
 	NoBackupFile = 20000
 	NoOwnThing   = 20001
+	AlreadyMaxed = 20002
+	MaterialNotEnough = 20003
 
 	ParaInvalid = 40000
 )

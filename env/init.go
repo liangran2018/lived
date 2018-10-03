@@ -2,6 +2,7 @@ package env
 
 //概率
 var weatherPro []map[weather]wl
+var tempraturePro []map[weather]wl
 //对心情影响
 var swMood []map[weather]int
 var seasonName []string
@@ -45,6 +46,46 @@ func init() {
 		lightSnowy:wl{min:77, max:86},
 		heavySnowy:wl{min:87, max:94},
 		storm:wl{min:95, max:100},
+	}
+
+	//当日零点气温
+	tempraturePro = make([]map[weather]wl, 4)
+	tempraturePro[spring] = map[weather]wl {
+		sunny:wl{min:8, max:15},
+		cloudy:wl{min:6, max:13},
+		foggy:wl{min:3, max:12},
+		overcast:wl{min:0, max:9},
+		windy:wl{min:1, max:10},
+		lightRainy:wl{min:-3, max:4},
+		heavyRainy:wl{min:-8, max:0},
+		lightSnowy:wl{min:-8, max:0},
+	}
+	tempraturePro[summer] = map[weather]wl {
+		sunny:wl{min:22, max:30},
+		cloudy:wl{min:21, max:28},
+		overcast:wl{min:20, max:26},
+		windy:wl{min:20, max:26},
+		lightRainy:wl{min:19, max:25},
+		heavyRainy:wl{min:17, max:20},
+		storm:wl{min:14, max:18},
+	}
+	tempraturePro[autumn] = map[weather]wl {
+		sunny:wl{min:9, max:15},
+		cloudy:wl{min:9, max:14},
+		overcast:wl{min:8, max:12},
+		windy:wl{min:8, max:13},
+		lightRainy:wl{min:5, max:10},
+		heavyRainy:wl{min:0, max:6},
+	}
+	tempraturePro[winter] = map[weather]wl {
+		sunny:wl{min:0, max:8},
+		cloudy:wl{min:2, max:9},
+		foggy:wl{min:-1, max:7},
+		overcast:wl{min:-1, max:8},
+		windy:wl{min:-3, max:5},
+		lightSnowy:wl{min:-4, max:4},
+		heavySnowy:wl{min:-7, max:2},
+		storm:wl{min:-11, max:-1},
 	}
 
 	swMood = make([]map[weather]int, 4)
