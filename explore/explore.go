@@ -52,13 +52,13 @@ func Go() {
 
 	//EquipMent()
 
-	if GetEquip().e[0] == materiel.Bow {
+	if GetEquip().e[0] == materiel.ShortBow {
 		fmt.Println("需要携带箭")
 	}
 
 	Goods()
 
-	if GetEquip().e[0] == materiel.Bow && GetBag().Count(materiel.Arrow) == 0 {
+	if GetEquip().e[0] == materiel.ShortBow && GetBag().Count(materiel.Arrow) == 0 {
 		fmt.Println("没有携带箭噢")
 		NewHeroHot(false)
 	} else {

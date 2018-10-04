@@ -12,16 +12,18 @@ import (
 func sleep() *outputBuild {
 	opb := &outputBuild{IsUpdate:true}
 
-	this := GetOwnBuilding().Own[bed]
+	this := obl.Own[bed]
 	bed := homeBuilding[bed]
 	if this.Lvl == bed.maxlvl {
 		opb.IsUpdate = false
 	}
 
 	opb.DurPercent = this.Dur/bed.b[this.Lvl].maxdur * 100
-	opb.Action = make(map[action]bool, 3)
+	opb.Action = make(map[action]bool, sleep8H - sleep1H + 1)
 
 	for i:= sleep1H; i<= sleep8H; i++ {
+		opb.Action[i] = false
+
 		if i.Lvl() >= this.Lvl {
 			opb.Action[i] = true
 		}

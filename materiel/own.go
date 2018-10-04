@@ -1,10 +1,7 @@
 package materiel
 
 import (
-	"fmt"
-
 	"github.com/liangran2018/lived/log"
-	"github.com/liangran2018/lived/base"
 )
 
 type OwnThings struct {
@@ -77,24 +74,4 @@ func (this *OwnThings) Nothing() bool {
 	}
 
 	return true
-}
-
-func (this *OwnThings) Use() {
-	for {
-		fmt.Println("使用: 1.食物  2.药品  3.取消")
-		input, err := base.Input()
-		if err != nil {
-			log.GetLogger().Log(log.Warning, "ownthingUse input err", err.Error())
-			fmt.Println("输入失败")
-			continue
-		}
-
-		switch input {
-		case "1":
-
-		case "2":
-		default:
-			return
-		}
-	}
 }

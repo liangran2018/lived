@@ -8,6 +8,7 @@ import (
 	"github.com/liangran2018/lived/env"
 	"github.com/liangran2018/lived/log"
 	"github.com/liangran2018/lived/plat/home"
+	"github.com/liangran2018/lived/materiel"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,9 +28,9 @@ func Save(c *gin.Context) {
 		data.OwnBuild[k] = base.OB{Lvl:v.Lvl, Dur:v.Dur}
 	}
 
-	//for k, v := range materiel.GetOwnThings().OwnProduct() {
-	//	data.OwnProduct[int(k)] = v
-	//}
+	for k, v := range materiel.GetOwnThings().OwnProduct() {
+		data.OwnProduct[int(k)] = v
+	}
 
 	//	pl := plat.GetPublic()
 	//	for p, q := range pl {
