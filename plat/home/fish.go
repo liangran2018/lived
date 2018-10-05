@@ -1,21 +1,35 @@
 package home
 
+import (
+	"github.com/liangran2018/lived/env"
+	"github.com/liangran2018/lived/materiel"
+)
+
 func fishing() *outputBuild {
-	opb := &outputBuild{IsUpdate:true}
+	opb := &outputBuild{}
 
 	this := obl.Own[field]
 	field := homeBuilding[field]
-	if this.Lvl == field.maxlvl {
-		opb.IsUpdate = false
-	}
 
-	opb.DurPercent = this.Dur/field.b[this.Lvl].maxdur * 100
 	opb.Action = make(map[action]bool, 1)
-	opb.Action[goFishing] = false
 
-	if this.Lvl == 1 {
+	if this.Lvl == 0 {
+		opb.IsUpdate = true
+		opb.Action[goFishing] = false
+	} else {
+		opb.DurPercent = this.Dur/field.b[this.Lvl].maxdur * 100
 		opb.Action[goFishing] = true
 	}
-	
+
 	return opb
+}
+
+func fishAction(i action) int {
+	materiel.GetOwnThings().PlusProduct(materiel.Meat, 1)
+
+	materiel.GetOwnThings().AddProduct(materiel.Fish, 1)
+
+	env.GetTime().Add(0, 30)
+
+	return 0
 }

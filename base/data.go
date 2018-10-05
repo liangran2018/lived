@@ -10,6 +10,7 @@ type Data struct {
 	User         User                `json:"user"`
 	OwnBuild     []OB                `json:"ownBuild"`
 	OwnProduct   map[int]int         `json:"ownMateriel"`
+	BigBag       bool				 `json:"bigbag"`
 	PlatLastTime map[int]int         `json:"platLastTime"`
 	PlatProduct  map[int]map[int]int `json:"platProduct"`
 	PlatAnimal   map[int]map[int]int `json:"platAnimal"`

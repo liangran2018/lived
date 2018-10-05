@@ -1,5 +1,10 @@
 package home
 
+import (
+	"github.com/liangran2018/lived/plat"
+	"github.com/liangran2018/lived/materiel"
+)
+
 var actionNature map[action]actionLimit
 
 type action int
@@ -7,6 +12,10 @@ type action int
 type actionLimit struct {
 	lvl int
 	t int
+	time plat.Tc
+	m map[materiel.Product]int
+	get map[materiel.Product]int
+	delay int
 }
 
 const (
@@ -41,7 +50,7 @@ const (
 	makeTorch
 	makeKnife
 	makeShortBow
-	make20Arrow
+	make4Arrow
 	makeBambooGun
 	makeClothArmor
 	makeTwoEdgedAxe
@@ -54,7 +63,7 @@ const (
 	makePoisonBamboo
 	makeRattanArmor
 
-	growFood
+	growRise
 	growPotato
 	growMint
 

@@ -12,6 +12,8 @@ import (
 	"github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/log"
 	"github.com/liangran2018/lived/plat/home"
+	"github.com/liangran2018/lived/materiel"
+	"github.com/liangran2018/lived/explore"
 
 	"github.com/gin-gonic/gin"
 )
@@ -143,7 +145,11 @@ func load(d *base.Data) {
 	//加载拥有建筑
 	home.LoadOwnBuilding(d.OwnBuild)
 	//加载拥有物品
-	//materiel.LoadOwnThings(d.OwnProduct)
+	materiel.LoadOwnThings(d.OwnProduct)
+	if d.BigBag {
+		explore.LoadBag()
+		home.BigBag = true
+	}
 	//更新各地点上次到访时间
 	//plat.LoadPublic(d.PlatLastTime)
 	//更新各地点物品数量

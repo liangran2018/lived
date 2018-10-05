@@ -30,9 +30,15 @@ var obl *OwnBuilding
 //不可变， 设施属性， 第一个参数是种类（room/cook等）， 第二个是等级，从1开始
 var homeBuilding []building
 
+//每个建筑的详情
 var doing []func() *outputBuild
 
+var actionDoing []func(i action) int
+
 var convert []string
+
+// 大背包
+var BigBag bool
 
 const (
 	_ = iota
@@ -53,63 +59,138 @@ func init() {
 	obl.Own = make([]ownBuild, 9)
 
 	doing = make([]func() *outputBuild, 9)
-	doing[bed] = sleep
-	doing[fire] = cook
-	doing[water] = clean
-	doing[drug] = medicine
-	doing[tool] = equip
-	doing[field] = grow
-	doing[fence] = rail
-	doing[fish] = fishing
+	doing = []func() *outputBuild {nil, sleep, cook, clean, medicine, equip, grow, rail, fishing}
+	actionDoing = make([]func(i action) int, 9)
+	actionDoing = []func(i action) int {nil, sleepAction, commonAction, commonAction, cleanAction, equipAction,
+		growAction, railAction, fishAction}
 
 	actionNature = make(map[action]actionLimit, actionEnd)
 	actionNature[sleep1H] = actionLimit{lvl:1, t:bed}
 	actionNature[sleep4H] = actionLimit{lvl:1, t:bed}
 	actionNature[sleep8H] = actionLimit{lvl:1, t:bed}
 
-	actionNature[cookBbq] = actionLimit{lvl:1, t:fire}
-	actionNature[cookRoastPotato] = actionLimit{lvl:1, t:fire}
-	actionNature[cookCongee] = actionLimit{lvl:1, t:fire}
-	actionNature[cookBroth] = actionLimit{lvl:2, t:fire}
-	actionNature[cookMashedPotato] = actionLimit{lvl:2, t:fire}
-	actionNature[cookStew] = actionLimit{lvl:2, t:fire}
-	actionNature[cookDriedFish] = actionLimit{lvl:3, t:fire}
-	actionNature[cookSmokedMeet] = actionLimit{lvl:3, t:fire}
-	actionNature[cookAnimalBlood] = actionLimit{lvl:3, t:fire}
+	actionNature[cookBbq] = actionLimit{lvl:1, t:fire, time:plat.Tc{Mi:45},
+		m:map[materiel.Product]int {materiel.Wood:1, materiel.Meat:1},
+		get:map[materiel.Product]int {materiel.BBQ:1}}
+	actionNature[cookRoastPotato] = actionLimit{lvl:1, t:fire, time:plat.Tc{Mi:30},
+		m:map[materiel.Product]int {materiel.Wood:1, materiel.Potato:1},
+		get:map[materiel.Product]int {materiel.RoastPotato:1}}
+	actionNature[cookCongee] = actionLimit{lvl:1, t:fire, time:plat.Tc{Mi:20},
+		m:map[materiel.Product]int {materiel.Water:1, materiel.Wood:1, materiel.Rise:1},
+		get:map[materiel.Product]int {materiel.Congee:1}}
+	actionNature[cookBroth] = actionLimit{lvl:2, t:fire, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Water:1, materiel.Wood:1, materiel.Meat:2},
+		get:map[materiel.Product]int {materiel.Broth:1}}
+	actionNature[cookMashedPotato] = actionLimit{lvl:2, t:fire, time:plat.Tc{Mi:30},
+		m:map[materiel.Product]int {materiel.Water:1, materiel.Wood:2, materiel.Potato:2},
+		get:map[materiel.Product]int {materiel.MashedPotato:2}}
+	actionNature[cookStew] = actionLimit{lvl:2, t:fire, time:plat.Tc{Mi:30},
+		m:map[materiel.Product]int {materiel.Water:2, materiel.Wood:2, materiel.Meat:1,
+		materiel.Mint:1, materiel.Honey:2, materiel.Potato:2},
+		get:map[materiel.Product]int {materiel.Stew:2}}
+	actionNature[cookDriedFish] = actionLimit{lvl:3, t:fire, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Salt:2, materiel.Fish:1},
+		get:map[materiel.Product]int {materiel.DriedFish:1}}
+	actionNature[cookSmokedMeet] = actionLimit{lvl:3, t:fire, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Salt:3, materiel.Meat:2},
+		get:map[materiel.Product]int {materiel.SmokedMeet:2}}
+	actionNature[cookAnimalBlood] = actionLimit{lvl:3, t:fire, time:plat.Tc{Mi:30},
+		m:map[materiel.Product]int {materiel.Water:1, materiel.Blood:1, materiel.Meat:2, materiel.Potato:2},
+		get:map[materiel.Product]int {materiel.AnimalBlood:1}}
 
-	actionNature[distill] = actionLimit{lvl:1, t:water}
-	actionNature[filterWater] = actionLimit{lvl:1, t:water}
-	actionNature[makeWine] = actionLimit{lvl:1, t:water}
+	actionNature[distill] = actionLimit{lvl:1, t:water, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Sea:3, materiel.Wood:1, materiel.Leaf:1},
+		get:map[materiel.Product]int {materiel.Water:2, materiel.Salt:1}, delay:48}
+	actionNature[filterWater] = actionLimit{lvl:1, t:water, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Sewage:2, materiel.Liana:1, materiel.Leaf:1},
+		get:map[materiel.Product]int {materiel.Water:2}, delay:24}
+	actionNature[makeWine] = actionLimit{lvl:1, t:water, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Water:2, materiel.Wood:1, materiel.Grape:2},
+		get:map[materiel.Product]int {materiel.Alcohol:2}, delay:48}
 
-	actionNature[makeBandage] = actionLimit{lvl:1, t:drug}
-	actionNature[makeDecoction] = actionLimit{lvl:1, t:drug}
-	actionNature[makeMintTea] = actionLimit{lvl:1, t:drug}
-	actionNature[makeMediWine] = actionLimit{lvl:2, t:drug}
-	actionNature[makeFirstAid] = actionLimit{lvl:2, t:drug}
-	actionNature[makeGrassPaste] = actionLimit{lvl:2, t:drug}
-	actionNature[makePlaster] = actionLimit{lvl:3, t:drug}
-	actionNature[makeTonifyPill] = actionLimit{lvl:3, t:drug}
+	actionNature[makeBandage] = actionLimit{lvl:1, t:drug, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Liana:1, materiel.Herb:1},
+		get:map[materiel.Product]int {materiel.Bandage:1}}
+	actionNature[makeDecoction] = actionLimit{lvl:1, t:drug, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Water:1, materiel.Herb:1},
+		get:map[materiel.Product]int {materiel.Decoction:1}}
+	actionNature[makeMintTea] = actionLimit{lvl:1, t:drug, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Water:1, materiel.Mint:1},
+		get:map[materiel.Product]int {materiel.MintTea:1}}
+	actionNature[makeMediWine] = actionLimit{lvl:2, t:drug, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Herb:2, materiel.Alcohol:1},
+		get:map[materiel.Product]int {materiel.MediWine:1}}
+	actionNature[makeFirstAid] = actionLimit{lvl:2, t:drug, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Herb:2, materiel.Alcohol:1, materiel.Mint:1, materiel.Ginseng:1},
+		get:map[materiel.Product]int {materiel.FirstAid:1}}
+	actionNature[makeGrassPaste] = actionLimit{lvl:2, t:drug, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Mint:2, materiel.Water:1, materiel.Resin:1},
+		get:map[materiel.Product]int {materiel.GrassPaste:1}}
+	actionNature[makePlaster] = actionLimit{lvl:3, t:drug, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Leaf:1, materiel.Liana:2, materiel.Herb:1, materiel.Resin:1},
+		get:map[materiel.Product]int {materiel.Plaster:1}}
+	actionNature[makeTonifyPill] = actionLimit{lvl:3, t:drug, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Water:1, materiel.Honey:1, materiel.Herb:2, materiel.Resin:1},
+		get:map[materiel.Product]int {materiel.Plaster:1}}
 
-	actionNature[makeStoneAxe] = actionLimit{lvl:1, t:tool}
-	actionNature[makeTorch] = actionLimit{lvl:1, t:tool}
-	actionNature[makeKnife] = actionLimit{lvl:1, t:tool}
-	actionNature[makeShortBow] = actionLimit{lvl:1, t:tool}
-	actionNature[make20Arrow] = actionLimit{lvl:1, t:tool}
-	actionNature[makeBambooGun] = actionLimit{lvl:2, t:tool}
-	actionNature[makeClothArmor] = actionLimit{lvl:2, t:tool}
-	actionNature[makeTwoEdgedAxe] = actionLimit{lvl:2, t:tool}
-	actionNature[makeHardBambooBow] = actionLimit{lvl:2, t:tool}
-	actionNature[makeBigBag] = actionLimit{lvl:2, t:tool}
-	actionNature[makeHardBambooCrossBow] = actionLimit{lvl:3, t:tool}
-	actionNature[makeSharpTwoAxe] = actionLimit{lvl:3, t:tool}
-	actionNature[makeSharpBamboo] = actionLimit{lvl:3, t:tool}
-	actionNature[makePoisonAxe] = actionLimit{lvl:3, t:tool}
-	actionNature[makePoisonBamboo] = actionLimit{lvl:3, t:tool}
-	actionNature[makeRattanArmor] = actionLimit{lvl:3, t:tool}
+	actionNature[makeStoneAxe] = actionLimit{lvl:1, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Wood:1, materiel.Stone:1},
+		get:map[materiel.Product]int {materiel.StoneAxe:1}}
+	actionNature[makeTorch] = actionLimit{lvl:1, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Wood:1, materiel.Liana:1, materiel.Resin:1},
+		get:map[materiel.Product]int {materiel.Torch:1}}
+	actionNature[makeKnife] = actionLimit{lvl:1, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Stone:1, materiel.Pebble:1},
+		get:map[materiel.Product]int {materiel.Knife:1}}
+	actionNature[makeShortBow] = actionLimit{lvl:1, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Liana:1, materiel.Bamboo:2, materiel.Tendons:1},
+		get:map[materiel.Product]int {materiel.ShortBow:1}}
+	actionNature[make4Arrow] = actionLimit{lvl:1, t:tool, time:plat.Tc{Mi:10},
+		m:map[materiel.Product]int {materiel.Pebble:2, materiel.Bamboo:1},
+		get:map[materiel.Product]int {materiel.Arrow:4}}
+	actionNature[makeBambooGun] = actionLimit{lvl:2, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Pebble:1, materiel.Bamboo:2},
+		get:map[materiel.Product]int {materiel.BambooGun:1}}
+	actionNature[makeClothArmor] = actionLimit{lvl:2, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Liana:2, materiel.Hide:1},
+		get:map[materiel.Product]int {materiel.ClothArmor:1}}
+	actionNature[makeTwoEdgedAxe] = actionLimit{lvl:2, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Stone:1, materiel.Pebble:2, materiel.Wood:2},
+		get:map[materiel.Product]int {materiel.TwoEdgedAxe:1}}
+	actionNature[makeHardBambooBow] = actionLimit{lvl:2, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Liana:4, materiel.Bamboo:8, materiel.Tendons:2},
+		get:map[materiel.Product]int {materiel.HardBambooBow:1}}
+	actionNature[makeBigBag] = actionLimit{lvl:2, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Liana:8, materiel.Hide:8},
+		get:map[materiel.Product]int {materiel.BigBag:1}}
+	actionNature[makeHardBambooCrossBow] = actionLimit{lvl:3, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Liana:2, materiel.Bamboo:4, materiel.Tendons:2, materiel.Wood:2},
+		get:map[materiel.Product]int {materiel.HardBambooCrossBow:1}}
+	actionNature[makeSharpTwoAxe] = actionLimit{lvl:3, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Stone:1, materiel.Pebble:2, materiel.Metal:1, materiel.Wood:2, materiel.Gold:1},
+		get:map[materiel.Product]int {materiel.SharpTwoAxe:1}}
+	actionNature[makeSharpBamboo] = actionLimit{lvl:3, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Stone:1, materiel.Pebble:2, materiel.Metal:1, materiel.Wood:2, materiel.Gold:1},
+		get:map[materiel.Product]int {materiel.SharpBamboo:1}}
+	actionNature[makePoisonAxe] = actionLimit{lvl:3, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Stone:1, materiel.Pebble:2, materiel.Metal:2, materiel.Wood:2, materiel.Venom:3},
+		get:map[materiel.Product]int {materiel.PoisonAxe:1}}
+	actionNature[makePoisonBamboo] = actionLimit{lvl:3, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Stone:1, materiel.Pebble:2, materiel.Metal:2, materiel.Wood:2, materiel.Venom:3},
+		get:map[materiel.Product]int {materiel.PoisonAxe:1}}
+	actionNature[makeRattanArmor] = actionLimit{lvl:3, t:tool, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Liana:2, materiel.Hide:1, materiel.Bamboo:6, materiel.Gold:2, materiel.Metal:6},
+		get:map[materiel.Product]int {materiel.PoisonAxe:1}}
 
-	actionNature[growFood] = actionLimit{lvl:1, t:field}
-	actionNature[growPotato] = actionLimit{lvl:1, t:field}
-	actionNature[growMint] = actionLimit{lvl:2, t:field}
+	actionNature[growRise] = actionLimit{lvl:1, t:field, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Water:3, materiel.Rise:3},
+		get:map[materiel.Product]int {materiel.Rise:6}, delay:48}
+	actionNature[growPotato] = actionLimit{lvl:1, t:field, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Water:1, materiel.Potato:2},
+		get:map[materiel.Product]int {materiel.Potato:4}, delay:36}
+	actionNature[growMint] = actionLimit{lvl:2, t:field, time:plat.Tc{H:1},
+		m:map[materiel.Product]int {materiel.Water:4, materiel.Mint:3},
+		get:map[materiel.Product]int {materiel.Mint:6}, delay:36}
 
 	actionNature[goFishing] = actionLimit{lvl:1, t:fish}
 }
@@ -129,6 +210,8 @@ func HomeBuildingInit() {
 func bedInit() {
 	homeBuilding[bed].maxlvl = 3
 	homeBuilding[bed].b = make([]buildingNature, 4)
+	homeBuilding[bed].b[1] = buildingNature{maxdur:100, timeConsume:plat.Tc{Mi:30},
+		lvlupNeed:map[materiel.Product]int{materiel.Wood:4, materiel.Pebble:5, materiel.Liana:2}}
 	homeBuilding[bed].b[2] = buildingNature{maxdur:200, timeConsume:plat.Tc{H:1},
 		lvlupNeed:map[materiel.Product]int{materiel.Wood:8, materiel.Stone:5, materiel.Pebble:10, materiel.Liana:5}}
 	homeBuilding[bed].b[3] = buildingNature{maxdur:300, timeConsume:plat.Tc{H:2},

@@ -29,6 +29,9 @@ const (
 	Mint    // 薄荷
 	Honey   // 蜂蜜
 	Ginseng // 人参
+	Rise    // 粗粮
+	Salt 	// 盐
+	Blood	// 兽血
 
 	Herb
 	Bandage // 绷带
@@ -47,6 +50,11 @@ const (
 	Grass 	//草
 	Sand	//沙子
 	Leaf
+	Resin   //树脂
+	Bamboo  //竹子
+	Tendons //兽筋
+	Hide 	//兽皮
+	Venom	//毒液
 	Metal	//金属
 	Gold
 	Arrow  // 箭(20支)

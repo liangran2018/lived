@@ -31,7 +31,8 @@ func AddRoute(app *gin.Engine) {
 	app.GET("/api/buildshow", home.Show)
 	app.GET("/api/buildupdatenotice", home.Notice)
 	app.GET("/api/buildupdate", home.Update)
-	app.GET("/api/choose", home.BedChoose)
+	app.GET("/api/actionnotice", home.ActionNotice)
+	app.GET("/api/actionchoose", home.ActionChoose)
 	app.GET("/test", test)
 	// 无路由或无方法
 	app.NoRoute(error)

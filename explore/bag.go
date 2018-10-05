@@ -27,6 +27,10 @@ func NewBag() {
 	exploreBag.product = make(map[materiel.Product]int)
 }
 
+func LoadBag() {
+	exploreBag.max = 80
+}
+
 func GetBag() *bag {
 	return exploreBag
 }

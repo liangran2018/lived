@@ -11,6 +11,7 @@ type mainPagePara struct {
 	Season     string        `json:"season"`
 	Weather    string        `json:"weather"`
 	Temprature int           `json:"temprature"`
+	Building   []bool 		 `json:"building"`
 }
 
 func fillPara() *mainPagePara {
@@ -20,6 +21,7 @@ func fillPara() *mainPagePara {
 	p.Season = env.GetSeason().Name()
 	p.Weather = env.GetWeather().Name()
 	p.Temprature = env.GetTemp()
+	p.Building = GetOwnBuild()
 
 	return p
 }

@@ -116,18 +116,21 @@ func (this Product) EquipHot() Fight {
 func productInit() {
 	productName = make([]string, Undefined)
 	productName = []string{"肉", "烤肉", "土豆", "烤土豆", "粥", "肉汤", "土豆泥", "秘制炖肉", "鱼", "鱼干",
-		"烟熏肉", "兽血乱炖", "净水", "污水", "海水", "酒精", "椰子", "葡萄", "野枣", "薄荷", "蜂蜜", "人参",
+		"烟熏肉", "兽血乱炖", "净水", "污水", "海水", "酒精", "椰子", "葡萄", "野枣", "薄荷",
+		"蜂蜜", "人参", "粗粮", "盐", "兽血",
 		"药草", "绷带", "汤药", "薄荷茶", "药酒", "急救药", "青草膏", "膏药", "大补丸",
-		"木头", "石块", "石子", "藤蔓", "草", "沙子", "阔叶", "金属", "黄金", "箭", "大背包",
+		"木头", "石块", "石子", "藤蔓", "草", "沙子", "阔叶", "树脂", "竹子", "兽筋", "兽皮", "毒液",
+		"金属", "黄金", "箭", "大背包",
 		"短弓", "硬竹弓", "硬竹弩", "匕首", "石斧", "竹枪", "双刃斧", "锋利的双刃斧", "锋利的竹枪",
 		"毒刃斧", "毒竹枪", "布衣", "藤甲", "火把"}
 
 	productWeight = make([]int, BigBag)
 	productWeight = []int{2, 2, 1, 1, 1, 3, 2, 3, 2, 1,
 		2, 4, 1, 1, 1, 1, 2, 1, 1, 1,
-		1, 1,
+		1, 1, 1, 1, 1,
 		1, 1, 2, 2, 2, 1, 2, 1, 1,
-		3, 3, 1, 1, 1, 1, 1, 3, 4, 2}
+		3, 3, 1, 1, 1, 1, 1, 1, 2, 1, 3, 1,
+		3, 4, 2}
 
 	equipHot = make(map[Product]Fight, Undefined - ShortBow)
 	equipHot[ShortBow] = Fight{Attack:10}
@@ -181,5 +184,8 @@ func productInit() {
 	food[Mint] = FoodEnergy{Wake:5}
 	food[Honey] = FoodEnergy{Hungry:5, Wake:10}
 	food[Ginseng] = FoodEnergy{Ill:8, Hungry:5, Wake:8}
+	food[Rise] = FoodEnergy{Ill:-1, Hungry:5, Thirst:-2}
+	food[Salt] = FoodEnergy{Hungry:10, Thirst:-10}
+	food[Blood] = FoodEnergy{Ill:2, Hungry:3, Thirst:1}
 }
 

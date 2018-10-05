@@ -34,8 +34,7 @@ func Notice(c *gin.Context) {
 		return
 	}
 
-	this := GetOwnBuilding()
-	lvl := this.Own[i].Lvl
+	lvl := obl.Own[i].Lvl
 	if lvl == homeBuilding[i].maxlvl {
 		base.Output(c, base.AlreadyMaxed, nil)
 		return
@@ -69,8 +68,14 @@ func Update(c *gin.Context) {
 		return
 	}
 
-	timeNeed := homeBuilding[i].b[obl.Own[i].Lvl+1].timeConsume
-	lvlupNeed := homeBuilding[i].b[obl.Own[i].Lvl+1].lvlupNeed
+	lvl := obl.Own[i].Lvl
+	if lvl == homeBuilding[i].maxlvl {
+		base.Output(c, base.AlreadyMaxed, nil)
+		return
+	}
+
+	timeNeed := homeBuilding[i].b[lvl+1].timeConsume
+	lvlupNeed := homeBuilding[i].b[lvl+1].lvlupNeed
 
 	for k, v := range lvlupNeed {
 		materiel.GetOwnThings().PlusProduct(k, v)
@@ -82,16 +87,59 @@ func Update(c *gin.Context) {
 	return
 }
 
-func getBuilding(c *gin.Context) (int, bool) {
-	b := c.Query("building")
-	if base.Empty(b) {
-		return 0, false
+func ActionNotice(c *gin.Context) {
+	b, ok := getBuilding(c)
+	if !ok {
+		base.Output(c, base.ParaInvalid, nil)
+		return
 	}
 
-	i, err := base.IntVal(b)
-	if err != nil || i < 1 || i > len(obl.Own) {
-		return 0, false
+	if b == 1 {
+		base.Output(c, 0, nil)
+		return
 	}
 
-	return i, true
+	a, ok := getAction(c)
+	if !ok {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	n := actionNotice(b, a)
+	base.Output(c, n.code, n)
+	return
+}
+
+func ActionChoose(c *gin.Context) {
+	b, ok := getBuilding(c)
+	if !ok {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	i, ok := getAction(c)
+	if !ok {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if i.Type() != b {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if BigBag && i == makeBigBag {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	code := actionDoing[b](i)
+
+	if code != 0 {
+		base.Output(c, code, nil)
+		return
+	}
+
+	base.Output(c, 0, fillPara())
+	return
 }
