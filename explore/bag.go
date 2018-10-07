@@ -1,8 +1,6 @@
 package explore
 
 import (
-	"fmt"
-	"strconv"
 	"io/ioutil"
 	"encoding/json"
 
@@ -13,6 +11,12 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+type one struct {
+	Name string `json:"name"`
+	Num  int    `json:"num"`
+	Weight int  `json:"weight"`
+}
+
 var exploreBag *bag
 
 type bag struct {
@@ -21,14 +25,22 @@ type bag struct {
 	product map[materiel.Product]int
 }
 
+type ownThing struct {
+	Materiel  []one `json:"materiel"`
+	Food      []one `json:"food"`
+	Drug      []one `json:"drug"`
+	Equipment []one `json:"equipment"`
+	Bag       int   `json:"bag"`
+}
+
 func NewBag() {
 	exploreBag = &bag{}
-	exploreBag.max = 50
+	exploreBag.max = 40
 	exploreBag.product = make(map[materiel.Product]int)
 }
 
 func LoadBag() {
-	exploreBag.max = 80
+	exploreBag.max = 60
 }
 
 func GetBag() *bag {
@@ -79,23 +91,42 @@ func (this *bag) Clear() {
 	}
 }
 
-func (this *bag) Show() {
-	if len(this.product) == 0 {
-		fmt.Println("背包为空")
-		return
+func BagNotice(c *gin.Context) {
+	ot := &ownThing{}
+	ot.Materiel = make([]one, 0)
+	ot.Food = make([]one, 0)
+	ot.Drug = make([]one, 0)
+	ot.Equipment = make([]one, 0)
+	ot.Bag = exploreBag.max
+
+	for k, v := range materiel.GetOwnThings().OwnProduct() {
+		if v != 0 {
+			o := one{Name:k.Name(), Num:v, Weight:k.Weight()}
+			switch k.Type() {
+			case materiel.Materiel:
+				ot.Materiel = append(ot.Materiel, o)
+			case materiel.Food:
+				ot.Food = append(ot.Food, o)
+			case materiel.Drug:
+				ot.Drug = append(ot.Drug, o)
+			case materiel.Equip:
+				ot.Equipment = append(ot.Equipment, o)
+			default:
+				log.GetLogger().Log(log.Wrong, "OwnShow", k.Type(), k.Name(), k)
+			}
+		}
 	}
 
-	for k, v := range this.product {
-		fmt.Println(k.Name() + "x" + strconv.Itoa(v) + " ")
-	}
+	base.Output(c, 0, ot)
+	return
 }
 
-func Bag(c *gin.Context) {
+func BagChoose(c *gin.Context) {
 	c.Request.ParseForm()
 
 	b, err := ioutil.ReadAll(c.Request.Body)
 	if err != nil {
-		base.Output(c, base.ParaInvalid, err.Error())
+		base.Output(c, base.PostBodyReadFail, err.Error())
 		log.GetLogger().Log(log.Wrong, "bag err", err.Error())
 		return
 	}
@@ -104,69 +135,34 @@ func Bag(c *gin.Context) {
 	var data map[int]int
 	err = json.Unmarshal(b, &data)
 	if err != nil {
-		base.Output(c, base.ParaInvalid, err.Error())
+		base.Output(c, base.JsonErr, err.Error())
 		log.GetLogger().Log(log.Wrong, "bag err", err.Error())
 		return
 	}
 
-
-}
-
-func Goods() {
-	ownThing := materiel.GetOwnThings()
-	if ownThing.Nothing() {
-		fmt.Println("你一无所有")
-		return
-	}
-
-	for {
-		fmt.Println("1.选择物品  2.准备好了")
-		input, err := base.Input()
-		if err != nil {
-			fmt.Println("输入失败\n")
-		}
-
-		if input != "1" {
+	for k, v := range data {
+		if ok := exploreBag.Set(materiel.Product(k), v); !ok {
+			base.Output(c, base.BagNotEnough, nil)
+			exploreBag.Clear()
 			return
 		}
 
-		p := ownThing.ChooseProduct()
-		for k, v := range p {
-			fmt.Println(strconv.Itoa(k) + ":" + v.Name())
-		}
-
-		input, err = base.Input()
-		if err != nil {
-			fmt.Println("输入失败\n")
-			continue
-		}
-
-		i, err := strconv.Atoi(input)
-		if err != nil || i < 0 || i >= len(p) {
-			fmt.Println("输入错误")
-			continue
-		}
-
-		c := ownThing.Count(p[i])
-		fmt.Printf("有%d个, 输入数量\n", c)
-		input, err = base.Input()
-		if err != nil {
-			fmt.Println("输入失败\n")
-			continue
-		}
-
-		j, err := strconv.Atoi(input)
-		if err != nil || j > c || (j < 0 && GetBag().Count(p[i]) + j < 0) {
-			fmt.Println("输入错误")
-			continue
-		}
-
-		if ok := GetBag().Set(p[i], j); !ok {
-			fmt.Println("过重")
-			continue
-		}
-
-		fmt.Println("放入成功")
-		materiel.GetOwnThings().PlusProduct(p[i], j)
+		materiel.GetOwnThings().PlusProduct(materiel.Product(k), v)
 	}
+
+	base.Output(c, 0, nil)
+	return
+}
+
+func BagShow(c *gin.Context) {
+	s := make(map[materiel.Product]int, len(exploreBag.product))
+
+	for k, v := range exploreBag.product {
+		if v != 0 {
+			s[k] = v
+		}
+	}
+
+	base.Output(c, 0, s)
+	return
 }

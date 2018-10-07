@@ -12,8 +12,16 @@ import (
 type outputBuild struct {
 	IsUpdate   bool            `json:"isUpdate"`
 	DurPercent int             `json:"durPercent"`
-	Action     map[action]bool `json:"action"`
+	Action     map[action]int  `json:"action"`
 }
+
+const (
+	ok = iota
+	lvlNotEnough
+	busy //当事者
+	other //旁观者
+	only
+)
 
 func Show(c *gin.Context) {
 	i, ok := getBuilding(c)
@@ -135,11 +143,191 @@ func ActionChoose(c *gin.Context) {
 
 	code := actionDoing[b](i)
 
-	if code != 0 {
-		base.Output(c, code, nil)
+	if b == 3 || b == 6 {
+		base.Output(c, 0, code)
 		return
 	}
 
-	base.Output(c, 0, fillPara())
+	base.Output(c, code, nil)
+	return
+}
+
+func ActionCheck(c *gin.Context) {
+	b, ok := getBuilding(c)
+	if !ok {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if b != 3 || b != 6 {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	i, ok := getAction(c)
+	if !ok {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if i.Type() != b {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if b == 3 {
+		if CleanTime.b {
+			base.Output(c, base.ParaInvalid, nil)
+			return
+		}
+
+		if i != CleanTime.a {
+			base.Output(c, base.ParaInvalid, nil)
+			return
+		}
+
+		//过去的时间
+		time := env.Int2Time(env.GetTimeInt().Time() - CleanTime.t)
+		if time.Year != 0 || time.Month != 0 {
+			base.Output(c, base.AlreadyGrowed, nil)
+			return
+		}
+
+		t := time.Day * 24 + time.Hour
+		if t >= actionNature[i].delay {
+			base.Output(c, base.AlreadyGrowed, nil)
+			return
+		} else {
+			base.Output(c, base.NotGrowed, struct {
+				H int `json:"h"`
+				Mi int `json:"mi"`
+			}{H:t, Mi:time.Minute})
+			return
+		}
+	}
+
+	if b == 6 {
+		if GrowTime.b {
+			base.Output(c, base.ParaInvalid, nil)
+			return
+		}
+
+		if i != GrowTime.a {
+			base.Output(c, base.ParaInvalid, nil)
+			return
+		}
+
+		//过去的时间
+		time := env.Int2Time(env.GetTimeInt().Time() - GrowTime.t)
+		if time.Year != 0 || time.Month != 0 {
+			base.Output(c, base.AlreadyGrowed, nil)
+			return
+		}
+
+		t := time.Day * 24 + time.Hour
+		if t >= actionNature[i].delay {
+			base.Output(c, base.AlreadyGrowed, nil)
+			return
+		} else {
+			base.Output(c, base.NotGrowed, struct {
+				H int `json:"h"`
+				Mi int `json:"mi"`
+			}{H:t, Mi:time.Minute})
+			return
+		}
+	}
+
+	base.Output(c, base.ParaInvalid, nil)
+	return
+}
+
+func Harvest(c *gin.Context) {
+	b, ok := getBuilding(c)
+	if !ok {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if b != 3 || b != 6 {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	i, ok := getAction(c)
+	if !ok {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if i.Type() != b {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if b == 3 {
+		if CleanTime.b {
+			base.Output(c, base.ParaInvalid, nil)
+			return
+		}
+
+		if i != CleanTime.a {
+			base.Output(c, base.ParaInvalid, nil)
+			return
+		}
+
+		//过去的时间
+		time := env.Int2Time(env.GetTimeInt().Time() - CleanTime.t)
+		t := time.Day * 24 + time.Hour
+
+		if time.Year != 0 || time.Month != 0 || t >= actionNature[i].delay {
+			for k, v := range actionNature[i].get {
+				materiel.GetOwnThings().AddProduct(k, v)
+			}
+
+			CleanTime.b = false
+			base.Output(c, 0, nil)
+			return
+		} else {
+			base.Output(c, base.NotGrowed, struct {
+				H int `json:"h"`
+				Mi int `json:"mi"`
+			}{H:t, Mi:time.Minute})
+			return
+		}
+	}
+
+	if b == 6 {
+		if GrowTime.b {
+			base.Output(c, base.ParaInvalid, nil)
+			return
+		}
+
+		if i != GrowTime.a {
+			base.Output(c, base.ParaInvalid, nil)
+			return
+		}
+
+		//过去的时间
+		time := env.Int2Time(env.GetTimeInt().Time() - GrowTime.t)
+		t := time.Day * 24 + time.Hour
+
+		if time.Year != 0 || time.Month != 0 || t >= actionNature[i].delay {
+			for k, v := range actionNature[i].get {
+				materiel.GetOwnThings().AddProduct(k, v)
+			}
+
+			GrowTime.b = false
+			base.Output(c, 0, nil)
+			return
+		} else {
+			base.Output(c, base.NotGrowed, struct {
+				H int `json:"h"`
+				Mi int `json:"mi"`
+			}{H:t, Mi:time.Minute})
+			return
+		}
+	}
+
+	base.Output(c, base.ParaInvalid, nil)
 	return
 }

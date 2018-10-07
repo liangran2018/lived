@@ -19,13 +19,13 @@ func cook() *outputBuild {
 		opb.DurPercent = this.Dur/fire.b[this.Lvl].maxdur * 100
 	}
 
-	opb.Action = make(map[action]bool, cookAnimalBlood - cookBbq + 1)
+	opb.Action = make(map[action]int, cookAnimalBlood - cookBbq + 1)
 
 	for i:= cookBbq; i<= cookAnimalBlood; i++ {
-		opb.Action[i] = false
+		opb.Action[i] = lvlNotEnough
 
 		if i.Lvl() <= this.Lvl {
-			opb.Action[i] = true
+			opb.Action[i] = ok
 		}
 	}
 

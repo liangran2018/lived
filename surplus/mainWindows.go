@@ -1,9 +1,12 @@
-package frame
+package surplus
 
 import (
-	"github.com/liangran2018/lived/env"
+	"github.com/liangran2018/lived/base"
 	"github.com/liangran2018/lived/human"
+	"github.com/liangran2018/lived/env"
 	"github.com/liangran2018/lived/plat/home"
+
+	"github.com/gin-gonic/gin"
 )
 
 type mainPagePara struct {
@@ -25,4 +28,9 @@ func fillPara() *mainPagePara {
 	p.Building = home.GetOwnBuild()
 
 	return p
+}
+
+func MainWin(c *gin.Context) {
+	base.Output(c, 0, fillPara())
+	return
 }

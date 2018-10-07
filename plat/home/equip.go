@@ -21,18 +21,18 @@ func equip() *outputBuild {
 		opb.DurPercent = this.Dur/tool.b[this.Lvl].maxdur * 100
 	}
 
-	opb.Action = make(map[action]bool, makeRattanArmor - cookBbq + 1)
+	opb.Action = make(map[action]int, makeRattanArmor - cookBbq + 1)
 
 	for i:= makeStoneAxe; i<= makeRattanArmor; i++ {
-		opb.Action[i] = false
+		opb.Action[i] = lvlNotEnough
 
 		if i.Lvl() <= this.Lvl {
-			opb.Action[i] = true
+			opb.Action[i] = ok
 		}
 	}
 
 	if BigBag {
-		opb.Action[makeBigBag] = false
+		opb.Action[makeBigBag] = only
 	}
 
 	return opb

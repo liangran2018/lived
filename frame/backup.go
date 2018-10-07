@@ -14,6 +14,7 @@ import (
 	"github.com/liangran2018/lived/plat/home"
 	"github.com/liangran2018/lived/materiel"
 	"github.com/liangran2018/lived/explore"
+	"github.com/liangran2018/lived/surplus"
 
 	"github.com/gin-gonic/gin"
 )
@@ -79,7 +80,7 @@ func ChooseBackup(c *gin.Context) {
 	//记录
 	log.GetLogger().Log(log.Info, "open program")
 	load(d)
-	base.Output(c, 0, fillPara())
+	surplus.MainWin(c)
 	backupClear()
 	return
 }

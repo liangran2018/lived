@@ -61,7 +61,7 @@ func init() {
 	doing = make([]func() *outputBuild, 9)
 	doing = []func() *outputBuild {nil, sleep, cook, clean, medicine, equip, grow, rail, fishing}
 	actionDoing = make([]func(i action) int, 9)
-	actionDoing = []func(i action) int {nil, sleepAction, commonAction, commonAction, cleanAction, equipAction,
+	actionDoing = []func(i action) int {nil, sleepAction, commonAction, cleanAction, commonAction, equipAction,
 		growAction, railAction, fishAction}
 
 	actionNature = make(map[action]actionLimit, actionEnd)

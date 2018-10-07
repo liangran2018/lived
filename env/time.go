@@ -3,7 +3,7 @@ package env
 import (
 	"github.com/liangran2018/lived/base"
 	"github.com/liangran2018/lived/human"
-	"log"
+	"github.com/liangran2018/lived/log"
 )
 
 var gmTimeInt *gameTimeInt
@@ -94,7 +94,7 @@ func (this *GameTime) Add(h, mi int) {
 	if this.Minute >= 60 {
 		this.Hour++
 		this.Minute -= 60
-		//human.GetHuman().ChangePerHour()
+		human.GetHuman().ChangePerHour()
 	}
 
 	this.Hour += h
@@ -102,9 +102,10 @@ func (this *GameTime) Add(h, mi int) {
 		this.Day++
 		this.Hour -= 24
 		this.Overday++
-		log.Printf("第%d天\n", this.Overday)
+		log.GetLogger().Log(log.Info, "新的一天", this.Overday)
 		NewWeather()
-		//	human.GetHuman().ChangePerDay()
+		NewTempToday()
+		//human.GetHuman().ChangePerDay()
 		//MoodChangePerDay()
 	}
 

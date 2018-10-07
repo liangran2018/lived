@@ -37,7 +37,7 @@ func (this *exEquip) Clear() {
 	this.e = make([]materiel.Product, 4)
 }
 
-func EquipChoose(c *gin.Context) {
+func EquipNotice(c *gin.Context) {
 	t := c.Query("type")
 	if base.Empty(t) {
 		log.GetLogger().Log(log.Wrong, "EquipChoose", t)

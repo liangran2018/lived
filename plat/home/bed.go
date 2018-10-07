@@ -19,9 +19,9 @@ func sleep() *outputBuild {
 
 	if this.Lvl != 0 {
 		opb.DurPercent = this.Dur/bed.b[this.Lvl].maxdur * 100
-		opb.Action = map[action]bool {sleep1H:true, sleep4H:true, sleep8H:true}
+		opb.Action = map[action]int {sleep1H:ok, sleep4H:ok, sleep8H:ok}
 	} else {
-		opb.Action = map[action]bool {sleep1H:false, sleep4H:false, sleep8H:false}
+		opb.Action = map[action]int {sleep1H:lvlNotEnough, sleep4H:lvlNotEnough, sleep8H:lvlNotEnough}
 	}
 
 	return opb

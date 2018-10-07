@@ -56,7 +56,7 @@ func Go() {
 		fmt.Println("需要携带箭")
 	}
 
-	Goods()
+	//Goods()
 
 	if GetEquip().e[0] == materiel.ShortBow && GetBag().Count(materiel.Arrow) == 0 {
 		fmt.Println("没有携带箭噢")
@@ -95,7 +95,7 @@ input:
 		case "2":
 			//GetEquip().Show()
 		case "3":
-			GetBag().Show()
+			//GetBag().Show()
 		case "4":
 			fmt.Println("采集:")
 			s := collect(place)

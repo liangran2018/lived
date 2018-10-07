@@ -9,6 +9,7 @@ import (
 	"github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/materiel"
 	"github.com/liangran2018/lived/plat/home"
+	"github.com/liangran2018/lived/surplus"
 
 	"github.com/gin-gonic/gin"
 )
@@ -46,6 +47,5 @@ func NewGame(c *gin.Context) {
 	//记录
 	log.GetLogger().Log(log.Info, "newgame start", name)
 
-	base.Output(c, 0, fillPara())
-	return
+	surplus.MainWin(c)
 }

@@ -19,7 +19,7 @@ func rail() *outputBuild {
 		opb.DurPercent = this.Dur/fence.b[this.Lvl].maxdur * 100
 	}
 
-	opb.Action = make(map[action]bool, 0)
+	opb.Action = make(map[action]int, 0)
 
 	return opb
 }

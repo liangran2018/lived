@@ -14,13 +14,13 @@ func medicine() *outputBuild {
 		opb.DurPercent = this.Dur/drug.b[this.Lvl].maxdur * 100
 	}
 
-	opb.Action = make(map[action]bool, makeTonifyPill - makeBandage + 1)
+	opb.Action = make(map[action]int, makeTonifyPill - makeBandage + 1)
 
 	for i:= makeBandage; i<= makeTonifyPill; i++ {
-		opb.Action[i] = false
+		opb.Action[i] = lvlNotEnough
 
 		if i.Lvl() <= this.Lvl {
-			opb.Action[i] = true
+			opb.Action[i] = ok
 		}
 	}
 

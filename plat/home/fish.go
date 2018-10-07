@@ -11,14 +11,14 @@ func fishing() *outputBuild {
 	this := obl.Own[field]
 	field := homeBuilding[field]
 
-	opb.Action = make(map[action]bool, 1)
+	opb.Action = make(map[action]int, 1)
 
 	if this.Lvl == 0 {
 		opb.IsUpdate = true
-		opb.Action[goFishing] = false
+		opb.Action[goFishing] = lvlNotEnough
 	} else {
 		opb.DurPercent = this.Dur/field.b[this.Lvl].maxdur * 100
-		opb.Action[goFishing] = true
+		opb.Action[goFishing] = ok
 	}
 
 	return opb
