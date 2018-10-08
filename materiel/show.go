@@ -8,15 +8,10 @@ import (
 )
 
 type ownThing struct {
-	Materiel  []one `json:"materiel"`
-	Food      []one `json:"food"`
-	Drug      []one `json:"drug"`
-	Equipment []one `json:"equipment"`
-}
-
-type one struct {
-	Name string `json:"name"`
-	Num  int    `json:"num"`
+	Materiel  map[Product]int `json:"materiel"`
+	Food      map[Product]int `json:"food"`
+	Drug      map[Product]int `json:"drug"`
+	Equipment map[Product]int `json:"equipment"`
 }
 
 func Show(c *gin.Context) {
@@ -28,23 +23,22 @@ func Show(c *gin.Context) {
 	}
 
 	ot := &ownThing{}
-	ot.Materiel = make([]one, 0)
-	ot.Food = make([]one, 0)
-	ot.Drug = make([]one, 0)
-	ot.Equipment = make([]one, 0)
+	ot.Materiel = make(map[Product]int)
+	ot.Food = make(map[Product]int)
+	ot.Drug = make(map[Product]int)
+	ot.Equipment = make(map[Product]int)
 	
 	for k, v := range this.product {
 		if v != 0 {
-			o := one{Name:k.Name(), Num:v}
 			switch k.Type() {
 			case Materiel:
-				ot.Materiel = append(ot.Materiel, o)
+				ot.Materiel[k] = v
 			case Food:
-				ot.Food = append(ot.Food, o)
+				ot.Food[k] = v
 			case Drug:
-				ot.Drug = append(ot.Drug, o)
+				ot.Drug[k] = v
 			case Equip:
-				ot.Equipment = append(ot.Equipment, o)
+				ot.Equipment[k] = v
 			default:
 				log.GetLogger().Log(log.Wrong, "OwnShow", k.Type(), k.Name(), k)
 			}

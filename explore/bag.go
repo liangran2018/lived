@@ -12,7 +12,6 @@ import (
 )
 
 type one struct {
-	Name string `json:"name"`
 	Num  int    `json:"num"`
 	Weight int  `json:"weight"`
 }
@@ -26,10 +25,10 @@ type bag struct {
 }
 
 type ownThing struct {
-	Materiel  []one `json:"materiel"`
-	Food      []one `json:"food"`
-	Drug      []one `json:"drug"`
-	Equipment []one `json:"equipment"`
+	Materiel  map[materiel.Product]one `json:"materiel"`
+	Food      map[materiel.Product]one `json:"food"`
+	Drug      map[materiel.Product]one `json:"drug"`
+	Equipment map[materiel.Product]one `json:"equipment"`
 	Bag       int   `json:"bag"`
 }
 
@@ -93,24 +92,24 @@ func (this *bag) Clear() {
 
 func BagNotice(c *gin.Context) {
 	ot := &ownThing{}
-	ot.Materiel = make([]one, 0)
-	ot.Food = make([]one, 0)
-	ot.Drug = make([]one, 0)
-	ot.Equipment = make([]one, 0)
+	ot.Materiel = make(map[materiel.Product]one)
+	ot.Food = make(map[materiel.Product]one)
+	ot.Drug = make(map[materiel.Product]one)
+	ot.Equipment = make(map[materiel.Product]one)
 	ot.Bag = exploreBag.max
 
 	for k, v := range materiel.GetOwnThings().OwnProduct() {
 		if v != 0 {
-			o := one{Name:k.Name(), Num:v, Weight:k.Weight()}
+			o := one{Num:v, Weight:k.Weight()}
 			switch k.Type() {
 			case materiel.Materiel:
-				ot.Materiel = append(ot.Materiel, o)
+				ot.Materiel[k] = o
 			case materiel.Food:
-				ot.Food = append(ot.Food, o)
+				ot.Food[k] = o
 			case materiel.Drug:
-				ot.Drug = append(ot.Drug, o)
+				ot.Drug[k] = o
 			case materiel.Equip:
-				ot.Equipment = append(ot.Equipment, o)
+				ot.Equipment[k] = o
 			default:
 				log.GetLogger().Log(log.Wrong, "OwnShow", k.Type(), k.Name(), k)
 			}

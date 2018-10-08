@@ -1,21 +1,17 @@
 package explore
 
 import (
-	"os"
 	"fmt"
-	"time"
-	"math/rand"
 
-	"github.com/liangran2018/lived/plat"
-	"github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/base"
-	"github.com/liangran2018/lived/materiel"
 	"github.com/liangran2018/lived/env"
-	"github.com/liangran2018/lived/log"
+	"github.com/liangran2018/lived/human"
+	"github.com/liangran2018/lived/materiel"
+	"github.com/liangran2018/lived/plat"
 )
 
 type equipChoose struct {
-	name materiel.Product
+	name   materiel.Product
 	detail []int
 }
 
@@ -60,11 +56,7 @@ func Go() {
 
 	if GetEquip().e[0] == materiel.ShortBow && GetBag().Count(materiel.Arrow) == 0 {
 		fmt.Println("没有携带箭噢")
-		NewHeroHot(false)
-	} else {
-		NewHeroHot(true)
 	}
-
 
 	env.GetTime().Add(explorePlace.NeedTime())
 
@@ -73,13 +65,13 @@ func Go() {
 	if t := explorePlace.SetLasttime(env.GetTimeInt().Time()); t != 0 {
 		explorePlace.PublicIncrease(t)
 	}
-	ChooseNext(explorePlace)
-}
 
+}
+/*
 func ChooseNext(place *plat.Nature) {
 	for {
 		fmt.Println("1.查看人物详细状态\n2.查看装备\n3.查看背包\n4.采集\n5.捕猎\n6.回家")
-input:
+	input:
 		input, err := base.Input()
 		if err != nil {
 			fmt.Println("输入失败")
@@ -145,11 +137,6 @@ input:
 			}
 
 			fmt.Println("前方出现一只" + a.Name() + ", 进入战斗")
-			ok := fight(a)
-			if !ok {
-				log.GetLogger().Log(log.Warning, "hero dead", a.Name(), a.Hot())
-				os.Exit(0)
-			}
 
 			log.GetLogger().Log(log.Info, "hunt", a.Name())
 			human.GetHuman().ExpAdd(a.Exp())
@@ -224,71 +211,4 @@ func hunt(place *plat.Nature) materiel.Animal {
 	i := rand.Intn(len(m))
 	return m[i]
 }
-
-func fight(i materiel.Animal) bool {
-	hero := GetHeroHot()
-	heroBlood := human.GetHuman().Blood
-	animal := i.Hot()
-	animalBlood := animal.Blood
-
-	for {
-		fmt.Printf("你有%d血量，%s有%d血量\n", heroBlood, i.Name(), animalBlood)
-
-		fmt.Println("你发起进攻")
-		blood, die := attack(hero.Attack, hero.Critical, animalBlood, animal.Defend, animal.Dodge)
-		if die {
-			fmt.Println("捕猎成功")
-			return true
-		}
-
-		animalBlood = blood
-		fmt.Printf("你有%d血量，%s有%d血量\n", heroBlood, i.Name(), animalBlood)
-
-		fmt.Println(i.Name() + "发起反击")
-		blood, die = attack(animal.Attack, animal.Critical, heroBlood, hero.Defend, hero.Dodge)
-		if die {
-			fmt.Println("死亡。。。")
-			return false
-		}
-
-		heroBlood = blood
-	}
-
-}
-
-func attack(attackerAtt, attackerCri, defenderBlo, defenderDef, defenderDod int) (int, bool) {
-	if defenderBlo <= 0 {
-		return 0, true
-	}
-
-	if defenderDod > 0 {
-		rand.Seed(time.Now().UnixNano())
-		if rand.Intn(10) < defenderDod {
-			log.GetLogger().Log(log.Info, "fight dodge")
-			return defenderBlo, false
-		}
-	}
-
-	a := attackerAtt - defenderDef
-	if a <= 0 {
-		a = 1
-	}
-	defenderBlo -= a
-	if defenderBlo <= 0 {
-		return 0, true
-	}
-
-	if attackerCri > 0 {
-		rand.Seed(time.Now().UnixNano())
-		if rand.Intn(10) < attackerCri {
-			log.GetLogger().Log(log.Info, "fight critical")
-			defenderBlo -= a
-		}
-	}
-
-	if defenderBlo <= 0 {
-		return 0, true
-	}
-
-	return defenderBlo, false
-}
+*/

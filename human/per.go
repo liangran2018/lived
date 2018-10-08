@@ -54,12 +54,9 @@ func (this *Human) ExpAdd(i int) {
 	if this.Exp >= this.Lvl * 100 {
 		this.Exp -= this.Lvl * 100
 		this.Lvl++
+		allHeroLvlup[this.Hero](this)
 		log.GetLogger().Log(log.Info, "hero lvlup", this.Exp, this.Lvl)
 	}
-}
-
-func (this *Human) Dead() bool {
-	return this.Blood <= 0
 }
 
 func (this *Human) ChangePerHour() {

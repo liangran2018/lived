@@ -110,7 +110,7 @@ const (
 	FierceBear
 	Snake
 
-	end
+	AnimalEnd
 )
 
 func init() {

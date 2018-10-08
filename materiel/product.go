@@ -9,6 +9,7 @@ type Fight struct {
 	Defend int
 	Dodge int
 	Critical int
+	Distance int
 }
 
 type DrugEffect struct {
@@ -133,18 +134,18 @@ func productInit() {
 		3, 4, 2}
 
 	equipHot = make(map[Product]Fight, Undefined - ShortBow)
-	equipHot[ShortBow] = Fight{Attack:10}
-	equipHot[HardBambooBow] = Fight{Attack:15, Critical:1}
-	equipHot[HardBambooCrossBow] = Fight{Attack:20, Critical:2}
+	equipHot[ShortBow] = Fight{Attack:10, Distance:4}
+	equipHot[HardBambooBow] = Fight{Attack:15, Critical:1, Distance:4}
+	equipHot[HardBambooCrossBow] = Fight{Attack:20, Critical:2, Distance:5}
 
-	equipHot[Knife] = Fight{Attack:12}
-	equipHot[StoneAxe] = Fight{Attack:18, Critical:1}
-	equipHot[BambooGun] = Fight{Attack:18}
-	equipHot[TwoEdgedAxe] = Fight{Attack:24, Critical:1}
-	equipHot[SharpTwoAxe] = Fight{Attack:30, Critical:2}
-	equipHot[SharpBamboo] = Fight{Attack:24, Critical:1}
-	equipHot[PoisonAxe] = Fight{Attack:36, Critical:3}
-	equipHot[PoisonBamboo] = Fight{Attack:30, Critical:2}
+	equipHot[Knife] = Fight{Attack:12, Distance:1}
+	equipHot[StoneAxe] = Fight{Attack:18, Critical:1, Distance:1}
+	equipHot[BambooGun] = Fight{Attack:18, Distance:2}
+	equipHot[TwoEdgedAxe] = Fight{Attack:24, Critical:1, Distance:1}
+	equipHot[SharpTwoAxe] = Fight{Attack:30, Critical:2, Distance:1}
+	equipHot[SharpBamboo] = Fight{Attack:24, Critical:1, Distance:2}
+	equipHot[PoisonAxe] = Fight{Attack:36, Critical:3, Distance:1}
+	equipHot[PoisonBamboo] = Fight{Attack:30, Critical:2, Distance:2}
 
 	equipHot[ClothArmor] = Fight{Defend:18, Dodge:1}
 	equipHot[RattanArmor] = Fight{Defend:26, Dodge:2}
@@ -188,4 +189,3 @@ func productInit() {
 	food[Salt] = FoodEnergy{Hungry:10, Thirst:-10}
 	food[Blood] = FoodEnergy{Ill:2, Hungry:3, Thirst:1}
 }
-

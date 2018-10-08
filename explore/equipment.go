@@ -6,7 +6,6 @@ import (
 
 	"github.com/liangran2018/lived/base"
 	"github.com/liangran2018/lived/materiel"
-	"github.com/liangran2018/lived/human"
 	"github.com/liangran2018/lived/log"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +16,6 @@ type exEquip struct {
 }
 
 var exploreEquip *exEquip
-var exploreHot materiel.Fight
 
 func NewEquip() {
 	exploreEquip = &exEquip{}
@@ -105,23 +103,4 @@ func Equip(c *gin.Context) {
 func Show(c *gin.Context) {
 	base.Output(c, 0, exploreEquip.e)
 	return
-}
-
-func NewHeroHot(arrow bool) {
-	exploreHot.Attack = human.GetHuman().Attack + exploreEquip.e[2].EquipHot().Attack
-	exploreHot.Defend = human.GetHuman().Defend + exploreEquip.e[1].EquipHot().Defend
-	exploreHot.Dodge = human.GetHuman().Dodge + exploreEquip.e[1].EquipHot().Dodge
-	exploreHot.Critical = human.GetHuman().Critical + exploreEquip.e[2].EquipHot().Critical
-	if arrow {
-		exploreHot.Attack += exploreEquip.e[0].EquipHot().Attack
-		exploreHot.Critical += exploreEquip.e[0].EquipHot().Critical
-	}
-}
-
-func GetHeroHot() materiel.Fight {
-	return exploreHot
-}
-
-func FightClear() {
-	exploreHot = materiel.Fight{0,0,0,0}
 }

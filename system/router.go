@@ -39,6 +39,8 @@ func AddRoute(app *gin.Engine) {
 	app.GET("/api/actioncheck", home.ActionCheck)
 	app.GET("/api/harvest", home.Harvest)
 
+	app.GET("/api/fight", explore.Fight)
+
 	app.GET("/test", test)
 	// 无路由或无方法
 	app.NoRoute(error)

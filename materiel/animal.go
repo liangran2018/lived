@@ -47,7 +47,7 @@ func (this Animal) Meat() int {
 }
 
 func animalInit() {
-	animalName = make([]string, end)
+	animalName = make([]string, AnimalEnd)
 	animalName = []string{"狼", "瘦弱的狼", "凶猛的狼", "熊", "瘦弱的熊", "凶猛的熊", "蛇"}
 
 	animal = make(map[Animal]AnimalNature, 20)
