@@ -18,19 +18,21 @@ func AddRoute(app *gin.Engine) {
 	app.GET("/api/getbackup", frame.GetBackup)
 	app.GET("/api/loadbackup", frame.ChooseBackup)
 	app.GET("/api/save", frame.Save)
-
+	// 物品相关
 	app.GET("/api/ownthingshow", materiel.Show)
 	app.POST("/api/ownthingadd", materiel.Add)
 	app.POST("/api/ownthingplus", materiel.Plus)
-
+	// 装备相关
 	app.GET("/api/equipnotice", explore.EquipNotice)
 	app.POST("/api/equip", explore.Equip)
 	app.GET("/api/equipshow", explore.Show)
-
+	// 背包相关
 	app.GET("/api/bagnotice", explore.BagNotice)
 	app.POST("/api/bagchoose", explore.BagChoose)
 	app.GET("/api/bagshow", explore.BagShow)
-
+	app.GET("/api/bagadd", explore.BagAdd)
+	app.GET("/api/bagplus", explore.BagPlus)
+	// 家中建筑相关
 	app.GET("/api/buildshow", home.Show)
 	app.GET("/api/buildupdatenotice", home.Notice)
 	app.GET("/api/buildupdate", home.Update)
@@ -38,12 +40,13 @@ func AddRoute(app *gin.Engine) {
 	app.GET("/api/actionchoose", home.ActionChoose)
 	app.GET("/api/actioncheck", home.ActionCheck)
 	app.GET("/api/harvest", home.Harvest)
-
+	// 出门相关
 	app.GET("/api/platshow", explore.PlatShow)
 	app.GET("/api/platdetail", explore.Detail)
 	app.GET("/api/platgo", explore.Go)
-
+	app.GET("/api/explore", explore.Explore)
 	app.GET("/api/fight", explore.Fight)
+
 
 	app.GET("/test", test)
 	// 无路由或无方法

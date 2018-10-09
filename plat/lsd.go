@@ -8,8 +8,8 @@ func riprapInit() {
 	public[lsd] = &Nature{Time:Tc{H:0, Mi:40}, Lvl:1}
 
 	public[lsd].Product = map[materiel.Product]*count {
-		materiel.Stone:&count{maxNum:10, Increase:0.17},
-		materiel.Pebble:&count{maxNum:18, Increase:0.5},
+		materiel.Stone:&count{maxNum:18, Increase:0.15},
+		materiel.Pebble:&count{maxNum:18, Increase:0.18},
 	}
 
 	public[lsd].Animal = map[materiel.Animal]*count {

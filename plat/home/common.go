@@ -29,12 +29,10 @@ func GetOwnBuilding() *OwnBuilding {
 	return obl
 }
 
-func GetOwnBuild() []bool {
-	b := make([]bool, 9)
+func GetOwnBuild() []int {
+	b := make([]int, 9)
 	for k, v := range obl.Own {
-		if v.Lvl != 0 {
-			b[k] = true
-		}
+		b[k] = v.Lvl
 	}
 
 	return b
