@@ -2,20 +2,20 @@
   <div>
     <img class="user_img" src="../../../../static/user_img.png"/>
     <ul class="time_list">
-      <li class="time_item hour">{{this.hour}}:{{this.minute}}</li>
+      <li class="time_item hour">{{this.time.hour}}:{{this.time.minute}}</li>
       <li class="time_item temprature">{{this.data.temprature}}</li>
-      <li class="time_item overday">{{this.data.time.overday}}</li>
+      <li class="time_item overday">{{this.time.day}}</li>
       <li class="time_item season">{{this.data.season}}</li>
       <li class="time_item weather">{{this.data.weather}}</li>
     </ul>
     <ul class="user_list">
-      <li class="user_item hurt">{{this.data.user.Hurt}}</li>
-      <li class="user_item ill">{{this.data.user.Ill}}</li>
-      <li class="user_item thirst">{{this.data.user.Thirst}}</li>
-      <li class="user_item hungry">{{this.data.user.Hungry}}</li>
-      <li class="user_item mood">{{this.data.user.Mood}}</li>
-      <li class="user_item blood">{{this.data.user.Blood}}</li>
-      <li class="user_item wake">{{this.data.user.Wake}}</li>
+      <li class="user_item hurt">{{this.user.Hurt}}</li>
+      <li class="user_item ill">{{this.user.Ill}}</li>
+      <li class="user_item thirst">{{this.user.Thirst}}</li>
+      <li class="user_item hungry">{{this.user.Hungry}}</li>
+      <li class="user_item mood">{{this.user.Mood}}</li>
+      <li class="user_item blood">{{this.user.Blood}}</li>
+      <li class="user_item wake">{{this.user.Wake}}</li>
     </ul>
   </div>
 </template>
@@ -24,28 +24,12 @@
 export default {
   name: 'Time',
   props: {
-    data: Object
+    data: Object,
+    time: Object,
+    user: Object
   },
   data () {
     return {
-      hour: '',
-      minute: ''
-    }
-  },
-  mounted () {
-    let hours = this.data.time.hour
-    let minutes = this.data.time.minute
-    if (hours < 10) {
-      hours.toString()
-      this.hour = '0' + hours
-    } else {
-      this.hour = hours.toString()
-    }
-    if (minutes < 10) {
-      minutes.toString()
-      this.minute = '0' + minutes
-    } else {
-      this.minute = minutes.toString()
     }
   }
 }
