@@ -46,10 +46,6 @@ func GetBag() *bag {
 	return exploreBag
 }
 
-func (this *bag) UsedCap() int {
-	return this.usedCap
-}
-
 //剩余
 func (this *bag) RemaindCap() int {
 	return this.max - this.usedCap
@@ -72,14 +68,6 @@ func (this *bag) Set(p materiel.Product, i int) bool {
 	}
 
 	return false
-}
-
-func (this *bag) GetMateriel() map[materiel.Product]int {
-	return this.product
-}
-
-func (this *bag) Count(p materiel.Product) int {
-	return this.product[p]
 }
 
 func (this *bag) Clear() {
@@ -163,5 +151,70 @@ func BagShow(c *gin.Context) {
 	}
 
 	base.Output(c, 0, s)
+	return
+}
+
+func BagAdd(c *gin.Context) {
+	product := c.Query("product")
+	if base.Empty(product) {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	p, err := base.IntVal(product)
+	if err != nil || p < 0 || p > int(materiel.Gold) {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	count := c.Query("count")
+	if base.Empty(count) {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	i, err := base.IntVal(count)
+	if err != nil || i <= 0 {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	if ok := exploreBag.Set(materiel.Product(p), i); !ok {
+		base.Output(c, base.BagNotEnough, nil)
+		return
+	}
+
+	base.Output(c, 0, nil)
+	return
+}
+
+func BagPlus(c *gin.Context) {
+	product := c.Query("product")
+	if base.Empty(product) {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	p, err := base.IntVal(product)
+	if err != nil || p < 0 || p > int(materiel.Gold) {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	count := c.Query("count")
+	if base.Empty(count) {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	i, err := base.IntVal(count)
+	if err != nil || i <= 0 || i > exploreBag.product[materiel.Product(p)] {
+		base.Output(c, base.ParaInvalid, nil)
+		return
+	}
+
+	exploreBag.Set(materiel.Product(p), -i)
+
+	base.Output(c, 0, nil)
 	return
 }

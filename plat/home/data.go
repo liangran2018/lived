@@ -11,7 +11,7 @@ type mainPagePara struct {
 	Season     string        `json:"season"`
 	Weather    string        `json:"weather"`
 	Temprature int           `json:"temprature"`
-	Building   []bool 		 `json:"building"`
+	Building   []int 		 `json:"building"`
 }
 
 func fillPara() *mainPagePara {
