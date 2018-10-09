@@ -7,6 +7,8 @@
       <li class="time_item overday">{{this.time.day}}</li>
       <li class="time_item season">{{this.data.season}}</li>
       <li class="time_item weather">{{this.data.weather}}</li>
+      <li class="lv_exp">Lv.{{this.user.Lvl}}</li>
+      <li class="lv_exp">Exp.{{this.user.Exp}}</li>
     </ul>
     <ul class="user_list">
       <li class="user_item hurt">{{this.user.Hurt}}</li>
@@ -17,6 +19,11 @@
       <li class="user_item blood">{{this.user.Blood}}</li>
       <li class="user_item wake">{{this.user.Wake}}</li>
     </ul>
+    <img class="sleep1" src="../../../../static/sleep1.png"/>
+    <img class="fire1" src="../../../../static/fire1.png"/>
+    <img class="medicine1" src="../../../../static/medicine1.png"/>
+    <img class="tool1" src="../../../../static/tool1.png"/>
+    <img class="water1" src="../../../../static/water1.png"/>
   </div>
 </template>
 
@@ -45,8 +52,13 @@ export default {
 .time_list
   background-color: #86603b91;
   height: .6rem;
-  margin-left: 1.5rem;
+  margin-left: 1.54rem;
   color: #fff;
+  .lv_exp
+    color: #000000;
+    line-height: .6rem;
+    margin-left: .2rem;
+    float: left;
   .time_item
     float left
     height .6rem
@@ -69,7 +81,7 @@ export default {
 .user_list
   background-color: #86603b91;
   height: .9rem;
-  margin-left: 1.5rem;
+  margin-left: 1.54rem;
   color: #fff;
   .user_item
     float left
@@ -82,7 +94,7 @@ export default {
     background-size .7rem .7rem
     text-align center
     border: .01rem solid #231a11;
-    border-left: none;
+    margin-right: .03rem;
   .hurt
     background-image url("../../../../static/hurt.png")
   .ill
@@ -99,4 +111,33 @@ export default {
     background-image url("../../../../static/blood.png")
   .wake
     background-image url("../../../../static/wake.png")
+.sleep1
+  width: 3rem;
+  position: absolute;
+  top: 2rem;
+  right: .1rem;
+.fire1
+  width: 3rem;
+  position: absolute;
+  top: 2.4rem;
+  left: .8rem;
+  opacity: .6;
+.medicine1
+  width: 3.5rem;
+  position: absolute;
+  top: 4rem;
+  right: .1rem;
+  opacity: .6;
+.water1
+  width: 3.5rem;
+  position: absolute;
+  top: 5rem;
+  left: .3rem;
+  opacity: .6;
+.tool1
+  width: 3.5rem;
+  position: absolute;
+  top: 7rem;
+  right: .1rem;
+  opacity: .6;
 </style>
