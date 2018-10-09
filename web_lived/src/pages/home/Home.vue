@@ -24,7 +24,6 @@ export default {
     },
     getHomeInfoSucc (res) {
       var data = res.data.data
-      console.log(data)
       this.data = data
     }
   },
@@ -34,9 +33,6 @@ export default {
 }
 </script>
 
-<style scoped>
-#home{
-  font-size: 30px;
-  padding: 20px;
-}
+<style lang="stylus" scoped>
+
 </style>
