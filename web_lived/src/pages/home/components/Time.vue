@@ -3,7 +3,7 @@
     <img class="user_img" src="../../../../static/user_img.png"/>
     <ul class="time_list">
       <li class="time_item hour">{{this.time.hour}}:{{this.time.minute}}</li>
-      <li class="time_item temprature">{{this.data.temprature}}</li>
+      <li class="time_item temprature">{{this.time.temprature}}</li>
       <li class="time_item overday">{{this.time.day}}</li>
       <li class="time_item season">{{this.data.season}}</li>
       <li class="time_item weather">{{this.data.weather}}</li>
@@ -19,11 +19,12 @@
       <li class="user_item blood">{{this.user.Blood}}</li>
       <li class="user_item wake">{{this.user.Wake}}</li>
     </ul>
+    <img class="warehouse" src="../../../../static/warehouse.png" ref="warehouse"/>
     <img class="sleep1" src="../../../../static/sleep1.png"/>
-    <img class="fire1" src="../../../../static/fire1.png"/>
-    <img class="medicine1" src="../../../../static/medicine1.png"/>
-    <img class="tool1" src="../../../../static/tool1.png"/>
-    <img class="water1" src="../../../../static/water1.png"/>
+    <img class="fire1" src="../../../../static/fire1.png" ref="fire1"/>
+    <img class="medicine1" src="../../../../static/medicine1.png" ref="medicine1"/>
+    <img class="tool1" src="../../../../static/tool1.png" ref="tool1"/>
+    <img class="water1" src="../../../../static/water1.png" ref="water1"/>
   </div>
 </template>
 
@@ -38,6 +39,8 @@ export default {
   data () {
     return {
     }
+  },
+  mounted () {
   }
 }
 </script>
@@ -114,30 +117,36 @@ export default {
 .sleep1
   width: 3rem;
   position: absolute;
-  top: 2rem;
+  top: 5rem;
   right: .1rem;
 .fire1
   width: 3rem;
   position: absolute;
-  top: 2.4rem;
+  top: 5.5rem;
   left: .8rem;
   opacity: .6;
 .medicine1
   width: 3.5rem;
   position: absolute;
-  top: 4rem;
+  top: 7rem;
   right: .1rem;
   opacity: .6;
 .water1
-  width: 3.5rem;
+  width: 3rem;
   position: absolute;
-  top: 5rem;
-  left: .3rem;
+  top: 8rem;
+  left: 1rem;
   opacity: .6;
 .tool1
   width: 3.5rem;
   position: absolute;
-  top: 7rem;
+  top: 10rem;
   right: .1rem;
   opacity: .6;
+.warehouse
+  width: 3rem;
+  position: absolute;
+  top: 2.6rem;
+  left: 0;
+  opacity: .7;
 </style>
